@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  createGlobalStyle,
+  ThemeProvider as ScThemeProvider,
+} from 'styled-components';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 
-function App() {
+import colors from 'constants/colors';
+import Routers from './Routers';
+import theme from 'theme';
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ScThemeProvider theme={colors}>
+      <GlobalStyles />
+      <MuiThemeProvider theme={theme}>
+        <Router>
+          <Routers />
+        </Router>
+      </MuiThemeProvider>
+    </ScThemeProvider>
   );
 }
 
-export default App;
+const GlobalStyles = createGlobalStyle`
+  *, *::after, *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 65%;
+    scroll-behavior: smooth;
+  }
+
+::-webkit-scrollbar {
+  width: .5rem;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: ${colors.primary};
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: ${colors.secondary};
+}
+
+`;
