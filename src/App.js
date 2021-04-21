@@ -29,11 +29,6 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  html {
-    font-size: 65%;
-    scroll-behavior: smooth;
-  }
-
 ::-webkit-scrollbar {
   width: .5rem;
 }
