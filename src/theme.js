@@ -16,6 +16,23 @@ const theme = responsiveFontSizes(
 		},
 		typography: {
 			fontFamily: ['Poppins', 'sans-serif'].join(',')
+		},
+		props: {
+			MuiTextField: {
+				fullWidth: true,
+				variant: 'outlined'
+			},
+			MuiButton: {
+				variant: 'contained',
+				disableRipple: true
+			}
+		},
+		overrides: {
+			MuiFormControl: {
+				root: {
+					margin: '.5rem 0'
+				}
+			}
 		}
 	})
 );

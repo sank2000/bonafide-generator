@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Switch, Route, useLocation, Redirect } from 'react-router-dom';
 
-import { Welcome } from 'pages';
+import { Welcome, Login, StudentLogin } from 'pages';
 
 export default function AppRouter() {
 	const { pathname } = useLocation();
@@ -13,6 +13,8 @@ export default function AppRouter() {
 	return (
 		<Switch>
 			<Route path='/' exact component={Welcome} />
+			<Route path='/student/login' exact component={StudentLogin} />
+			<Route path='/:role/login' exact component={Login} />
 			<Redirect to='/' />
 		</Switch>
 	);
