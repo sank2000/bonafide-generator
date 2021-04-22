@@ -31,8 +31,8 @@ export default function Welcome() {
 			<BoxContainer>
 				{list.map((value, ind) => {
 					return (
-						<Link to={value.path} style={{ textDecoration: 'none' }}>
-							<Box key={ind}>
+						<Link key={ind} to={value.path} style={{ textDecoration: 'none' }}>
+							<Box>
 								<img src={value.image} alt='admin'></img>
 								<Typography variant='h5' color='primary'>
 									{value.title}
