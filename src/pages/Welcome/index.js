@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
 
-import { BgContainer, FlexContainer } from 'components';
+import { AppBar, BgContainer, FlexContainer } from 'components';
 import { Link } from 'react-router-dom';
 
 export default function Welcome() {
@@ -24,25 +24,28 @@ export default function Welcome() {
 	];
 
 	return (
-		<BgContainer>
-			<Typography variant='h3' color='primary' style={{ fontWeight: '600' }}>
-				Welcome to Bonafide Generator
-			</Typography>
-			<BoxContainer>
-				{list.map((value, ind) => {
-					return (
-						<Link key={ind} to={value.path} style={{ textDecoration: 'none' }}>
-							<Box>
-								<img src={value.image} alt='admin'></img>
-								<Typography variant='h5' color='primary'>
-									{value.title}
-								</Typography>
-							</Box>
-						</Link>
-					);
-				})}
-			</BoxContainer>
-		</BgContainer>
+		<>
+			<AppBar />
+			<BgContainer>
+				<Typography variant='h3' color='primary' style={{ fontWeight: '600' }}>
+					Welcome to Bonafide Generator
+				</Typography>
+				<BoxContainer>
+					{list.map((value, ind) => {
+						return (
+							<Link key={ind} to={value.path} style={{ textDecoration: 'none' }}>
+								<Box>
+									<img src={value.image} alt='admin'></img>
+									<Typography variant='h5' color='primary'>
+										{value.title}
+									</Typography>
+								</Box>
+							</Link>
+						);
+					})}
+				</BoxContainer>
+			</BgContainer>
+		</>
 	);
 }
 
