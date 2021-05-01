@@ -1,15 +1,8 @@
-import { useEffect } from 'react';
-import { Switch, Route, useLocation, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { Welcome, Login, StudentLogin } from 'pages';
 
-export default function AppRouter() {
-	const { pathname } = useLocation();
-
-	useEffect(() => {
-		window.scrollTo(0, 0);
-	}, [pathname]);
-
+export default function Base() {
 	return (
 		<Switch>
 			<Route path='/' exact component={Welcome} />

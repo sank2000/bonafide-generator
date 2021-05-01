@@ -1,20 +1,30 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Typography, TextField, Button } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { useHistory } from 'react-router';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 
 import { BgContainer, FlexContainer } from 'components';
+import Auth from 'contexts/Auth';
+import { login } from './function';
 
 export default function StudentLogin() {
 	const [selectedDate, handleDateChange] = useState(new Date());
 	const [registerNo, setRegisterNo] = useState('');
+	const { setAuth } = useContext(Auth);
+	const history = useHistory();
 
 	const handleSubmit = e => {
 		e.preventDefault();
 		if (selectedDate.toDateString() === 'Invalid Date') return;
+		login(setAuth, {
+			isAuth: true,
+			role: 'student'
+		});
 		console.log({ registerNo, dob: selectedDate.toISOString() });
+		history.push('/');
 	};
 
 	return (

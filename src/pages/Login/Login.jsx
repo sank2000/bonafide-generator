@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Typography, TextField, Button } from '@material-ui/core';
 import { useParams } from 'react-router';
 
 import { BgContainer, FlexContainer } from 'components';
+import Auth from 'contexts/Auth';
+import { login } from './function';
 
 export default function Login() {
 	const { role } = useParams();
+	const { setAuth } = useContext(Auth);
 	const [data, setData] = useState({
 		id: '',
 		password: ''
@@ -22,6 +25,10 @@ export default function Login() {
 
 	const handleSubmit = e => {
 		e.preventDefault();
+		login(setAuth, {
+			isAuth: true,
+			role
+		});
 		console.log(data);
 	};
 

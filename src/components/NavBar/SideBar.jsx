@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Drawer, IconButton, List, ListItem, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,6 +6,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import colors from 'constants/colors';
 import logo from 'assets/logo';
+import Auth from 'contexts/Auth';
+import authInit from 'constants/authInit';
 
 const useStyles = makeStyles({
 	list: {
@@ -52,12 +54,20 @@ function Item({ name, link }) {
 export default function SideBar() {
 	const [drawerOpen, setDrawerOpen] = useState(false);
 	const classes = useStyles();
+	const { setAuth } = useContext(Auth);
 
 	const toggleDrawer = open => event => {
 		if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
 			return;
 		}
 		setDrawerOpen(open);
+	};
+
+	const handleLogout = () => {
+		localStorage.removeItem('auth');
+		setAuth({
+			...authInit
+		});
 	};
 
 	const list = () => (
@@ -70,7 +80,7 @@ export default function SideBar() {
 				<Item name='Rejected Request' link='/reject' />
 				<Item name='All Profiles' link='/allprofiles' />
 				<ListItem>
-					<Typography variant='h6' className={classes.text}>
+					<Typography variant='h6' className={classes.text} onClick={handleLogout}>
 						Logout
 					</Typography>
 				</ListItem>
