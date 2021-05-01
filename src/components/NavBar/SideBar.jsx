@@ -30,6 +30,7 @@ const useStyles = makeStyles({
 	text: {
 		color: '#fff',
 		cursor: 'pointer',
+		textTransform: 'uppercase',
 		margin: '0 auto'
 	},
 	link: {
@@ -54,7 +55,7 @@ function Item({ name, link }) {
 export default function SideBar() {
 	const [drawerOpen, setDrawerOpen] = useState(false);
 	const classes = useStyles();
-	const { setAuth } = useContext(Auth);
+	const { auth, setAuth } = useContext(Auth);
 
 	const toggleDrawer = open => event => {
 		if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -70,18 +71,69 @@ export default function SideBar() {
 		});
 	};
 
+	const links = {
+		admin: [
+			{
+				name: 'Home',
+				link: '/'
+			},
+			{
+				name: 'Staff',
+				link: '/staff'
+			},
+			{
+				name: 'Student',
+				link: '/student'
+			},
+			{
+				name: 'Section',
+				link: '/section'
+			},
+			{
+				name: 'Admin',
+				link: '/admin'
+			}
+		],
+		staff: [
+			{
+				name: 'Profile',
+				link: '/Profile'
+			},
+			{
+				name: 'Action',
+				link: '/action'
+			},
+			{
+				name: 'Student',
+				link: '/student'
+			},
+			{
+				name: 'Section',
+				link: '/section'
+			}
+		],
+		student: [
+			{
+				name: 'Profile',
+				link: '/profile'
+			},
+			{
+				name: 'Bonafide',
+				link: '/bonafide'
+			}
+		]
+	};
+
 	const list = () => (
 		<Fragment>
 			<img src={logo} alt='logo' className={classes.logo}></img>
 			<List className={classes.list}>
-				<Item name='Home' link='/' />
-				<Item name='New Request' link='/new' />
-				<Item name='Update Request' link='/update' />
-				<Item name='Rejected Request' link='/reject' />
-				<Item name='All Profiles' link='/allprofiles' />
+				{links[auth.role].map((data, ind) => {
+					return <Item name={data.name} link={data.link} key={ind} />;
+				})}
 				<ListItem>
 					<Typography variant='h6' className={classes.text} onClick={handleLogout}>
-						Logout
+						LOGOUT
 					</Typography>
 				</ListItem>
 			</List>

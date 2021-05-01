@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router';
 import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { AccountCircleTwoTone as AccountCircle } from '@material-ui/icons';
@@ -22,6 +23,9 @@ const useStyles = makeStyles(theme => ({
 			display: 'none'
 		}
 	},
+	title: {
+		textTransform: 'capitalize'
+	},
 	active: {
 		width: '1rem',
 		height: '1rem',
@@ -35,6 +39,7 @@ export default function NavBar() {
 	const classes = useStyles();
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+	const location = useLocation();
 
 	const handleMobileMenuClose = () => {
 		setMobileMoreAnchorEl(null);
@@ -70,8 +75,8 @@ export default function NavBar() {
 			<AppBar elevation={3} position='fixed'>
 				<Toolbar>
 					<Drawer />
-					<Typography variant='h4' noWrap>
-						Profile
+					<Typography variant='h4' className={classes.title} noWrap>
+						{location?.pathname.split('/')[1] ? location?.pathname.split('/')[1] : 'home'}
 					</Typography>
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>
