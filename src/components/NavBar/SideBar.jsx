@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import colors from 'constants/colors';
+import logo from 'assets/logo';
 
 const useStyles = makeStyles({
 	list: {
@@ -61,7 +62,7 @@ export default function SideBar() {
 
 	const list = () => (
 		<Fragment>
-			<img src='/images/icon.png' alt='logo' className={classes.logo}></img>
+			<img src={logo} alt='logo' className={classes.logo}></img>
 			<List className={classes.list}>
 				<Item name='Home' link='/' />
 				<Item name='New Request' link='/new' />
