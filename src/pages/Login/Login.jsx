@@ -44,6 +44,7 @@ export default function Login() {
 					<TextField
 						label='Password'
 						required
+						type='password'
 						name='password'
 						value={data.password}
 						onChange={handleChange}
