@@ -38,11 +38,11 @@ const useStyles = makeStyles({
 	}
 });
 
-function Item({ name, link }) {
+function Item({ name, link, ...props }) {
 	const classes = useStyles();
 
 	return (
-		<Link className={classes.link} to={link}>
+		<Link className={classes.link} to={link} {...props}>
 			<ListItem>
 				<Typography variant='h6' className={classes.text}>
 					{name}
@@ -129,7 +129,14 @@ export default function SideBar() {
 			<img src={logo} alt='logo' className={classes.logo}></img>
 			<List className={classes.list}>
 				{links[auth.role].map((data, ind) => {
-					return <Item name={data.name} link={data.link} key={ind} />;
+					return (
+						<Item
+							name={data.name}
+							link={data.link}
+							key={ind}
+							onClick={() => setDrawerOpen(false)}
+						/>
+					);
 				})}
 				<ListItem>
 					<Typography variant='h6' className={classes.text} onClick={handleLogout}>
