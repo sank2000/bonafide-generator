@@ -1,32 +1,19 @@
+import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Fab } from '@material-ui/core';
+import { Typography, Fab, TextField, Button, Box } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { Table, TableContainer, TableHead, TableRow, Paper, TableBody } from '@material-ui/core';
 
-import { StyledTableCell, StyledTableRow } from 'components';
+import { StyledTableCell, StyledTableRow, Modal } from 'components';
+import { adminLayout } from 'constants/classes';
 
 const useStyles = makeStyles({
-	section: {
-		position: 'relative',
-		minHeight: 'calc(100vh - 80px)'
-	},
-	float: {
-		position: 'absolute',
-		bottom: 10,
-		right: 10
-	},
-	table: {
-		width: '90%',
-		margin: '0 auto'
-	},
-	title: {
-		margin: '10px 0',
-		fontWeight: 600
-	}
+	...adminLayout
 });
 
 export default function Staff() {
 	const classes = useStyles();
+	const [open, setOpen] = useState(false);
 	const data = [
 		{
 			name: 'Staff 1',
@@ -84,7 +71,35 @@ export default function Staff() {
 					</TableBody>
 				</Table>
 			</TableContainer>
-			<Fab color='secondary' className={classes.float}>
+			<Modal title={'Add staff'} open={open} setOpen={setOpen}>
+				<form>
+					<TextField label='ID' required name='id' />
+					<TextField label='Name' required name='name' />
+					<TextField label='Image URL' required name='imageURL' />
+					<TextField label='Designation' required name='designation' />
+					<TextField label='Department' required name='department' />
+					<TextField label='Campus' required name='campus' />
+					<TextField label='Phone' required name='phone' />
+					<TextField label='Email' type='email' required name='email' />
+					<TextField label='Section ID' required name='sectionID' />
+					<TextField label='Password' required type='password' name='password' />
+					<Box display='flex' justifyContent='flex-end'>
+						<Button
+							variant='contained'
+							color='primary'
+							type='button'
+							onClick={() => setOpen(false)}
+							className={classes.cancelBtn}
+						>
+							Cancel
+						</Button>
+						<Button variant='contained' color='primary' type='submit'>
+							Add
+						</Button>
+					</Box>
+				</form>
+			</Modal>
+			<Fab color='secondary' className={classes.float} onClick={() => setOpen(true)}>
 				<AddIcon />
 			</Fab>
 		</section>
