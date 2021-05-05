@@ -63,7 +63,7 @@ export default function Staff() {
 					</TableBody>
 				</Table>
 			</TableContainer>
-			<Modal title={'Add staff'} open={open} setOpen={setOpen}>
+			<Modal title={'Add section'} open={open} setOpen={setOpen}>
 				<form>
 					<TextField label='Name' required name='name' />
 					<TextField label='Staff ID' required name='staffID' />

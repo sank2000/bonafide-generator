@@ -75,7 +75,7 @@ export default function Student() {
 					</TableBody>
 				</Table>
 			</TableContainer>
-			<Modal title={'Add staff'} open={open} setOpen={setOpen}>
+			<Modal title={'Add student'} open={open} setOpen={setOpen}>
 				<form>
 					<TextField label='Register No' required name='registerNo' />
 					<TextField label='Name' required name='name' />
