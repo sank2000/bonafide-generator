@@ -1,6 +1,14 @@
-import React, { Fragment, useContext, useState } from 'react';
+import { Fragment, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Drawer, IconButton, List, ListItem, Typography } from '@material-ui/core';
+import {
+	Drawer,
+	IconButton,
+	List,
+	ListItem,
+	Typography,
+	Backdrop,
+	CircularProgress
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 
@@ -9,7 +17,7 @@ import logo from 'assets/logo';
 import Auth from 'contexts/Auth';
 import authInit from 'constants/authInit';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
 	list: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -35,8 +43,12 @@ const useStyles = makeStyles({
 	},
 	link: {
 		textDecoration: 'none'
+	},
+	backdrop: {
+		zIndex: theme.zIndex.drawer + 1000,
+		color: '#fff'
 	}
-});
+}));
 
 function Item({ name, link, ...props }) {
 	const classes = useStyles();
@@ -56,6 +68,7 @@ export default function SideBar() {
 	const [drawerOpen, setDrawerOpen] = useState(false);
 	const classes = useStyles();
 	const { auth, setAuth } = useContext(Auth);
+	const [open, setOpen] = useState(false);
 
 	const toggleDrawer = open => event => {
 		if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -65,10 +78,14 @@ export default function SideBar() {
 	};
 
 	const handleLogout = () => {
-		localStorage.removeItem('auth');
-		setAuth({
-			...authInit
-		});
+		setDrawerOpen(false);
+		setOpen(true);
+		setTimeout(() => {
+			localStorage.removeItem('auth');
+			setAuth({
+				...authInit
+			});
+		}, 3000);
 	};
 
 	const links = {
@@ -149,7 +166,7 @@ export default function SideBar() {
 
 	return (
 		<div>
-			<React.Fragment>
+			<Fragment>
 				<IconButton
 					edge='start'
 					className={classes.menuButton}
@@ -166,7 +183,10 @@ export default function SideBar() {
 				>
 					{list()}
 				</Drawer>
-			</React.Fragment>
+				<Backdrop className={classes.backdrop} open={open}>
+					<CircularProgress color='inherit' />
+				</Backdrop>
+			</Fragment>
 		</div>
 	);
 }
