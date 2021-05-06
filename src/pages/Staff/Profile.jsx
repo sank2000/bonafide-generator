@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { Typography } from '@material-ui/core';
 import { rgba } from 'polished';
+
+import { RowWithTypography } from 'components';
 
 export default function Profile() {
 	return (
@@ -11,31 +12,17 @@ export default function Profile() {
 			<div style={{ overflowX: 'auto' }}>
 				<table width='100%'>
 					<tbody>
-						<Row title={'Name'} value={'Staff 1'} />
-						<Row title={'ID'} value={'123456'} />
-						<Row title={'Designation'} value={'Assistant Professor'} />
-						<Row title={'Department'} value={'CSE'} />
-						<Row title={'Campus'} value={'BIT'} />
-						<Row title={'Phone'} value={'1234567890'} />
-						<Row title={'Email'} value={'staff@gmail.com'} />
+						<RowWithTypography title={'Name'} value={'Staff 1'} />
+						<RowWithTypography title={'ID'} value={'123456'} />
+						<RowWithTypography title={'Designation'} value={'Assistant Professor'} />
+						<RowWithTypography title={'Department'} value={'CSE'} />
+						<RowWithTypography title={'Campus'} value={'BIT'} />
+						<RowWithTypography title={'Phone'} value={'1234567890'} />
+						<RowWithTypography title={'Email'} value={'staff@gmail.com'} />
 					</tbody>
 				</table>
 			</div>
 		</Container>
-	);
-}
-
-function Row({ title, value }) {
-	return (
-		<tr>
-			<td style={{ width: '40%' }}>
-				<Typography variant='h6'>{title}</Typography>
-			</td>
-			<td>:</td>
-			<td>
-				<Typography variant='h6'>{value}</Typography>
-			</td>
-		</tr>
 	);
 }
 

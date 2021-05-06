@@ -123,10 +123,6 @@ export default function SideBar() {
 			{
 				name: 'Student',
 				link: '/student'
-			},
-			{
-				name: 'Section',
-				link: '/section'
 			}
 		],
 		student: [
