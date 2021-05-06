@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Base, Admin } from 'routers';
+import { Base, Admin, Staff } from 'routers';
 import Auth from 'contexts/Auth';
 
 export default function AppRouter() {
@@ -12,5 +12,12 @@ export default function AppRouter() {
 		window.scrollTo(0, 0);
 	}, [pathname]);
 
-	return auth?.isAuth ? <Admin /> : <Base />;
+	return auth?.isAuth ? (
+		<>
+			{auth?.role === 'admin' && <Admin />}
+			{auth?.role === 'staff' && <Staff />}
+		</>
+	) : (
+		<Base />
+	);
 }
