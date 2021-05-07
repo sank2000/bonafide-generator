@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Base, Admin, Staff } from 'routers';
+import { Base, Admin, Staff, Student } from 'routers';
 import Auth from 'contexts/Auth';
 
 export default function AppRouter() {
@@ -16,6 +16,7 @@ export default function AppRouter() {
 		<>
 			{auth?.role === 'admin' && <Admin />}
 			{auth?.role === 'staff' && <Staff />}
+			{auth?.role === 'student' && <Student />}
 		</>
 	) : (
 		<Base />
