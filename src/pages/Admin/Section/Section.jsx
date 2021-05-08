@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Fab, TextField, Button, Box } from '@material-ui/core';
+import { Typography, Fab, IconButton } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { Table, TableContainer, TableHead, TableRow, Paper, TableBody } from '@material-ui/core';
+import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 
-import { StyledTableCell, StyledTableRow, Modal } from 'components';
+import { StyledTableCell, StyledTableRow } from 'components';
 import { adminLayout } from 'constants/classes';
+import Add from './Add';
+import AddStudent from './AddStudent';
+import Edit from './Edit';
+import View from './View';
 
 const useStyles = makeStyles({
 	...adminLayout
@@ -13,7 +20,10 @@ const useStyles = makeStyles({
 
 export default function Staff() {
 	const classes = useStyles();
-	const [open, setOpen] = useState(false);
+	const [openAdd, setOpenAdd] = useState(false);
+	const [openAddStudent, setOpenAddStudent] = useState(false);
+	const [openUpdate, setOpenUpdate] = useState(false);
+	const [openView, setOpenView] = useState(false);
 	const data = [
 		{
 			name: 'Section 1',
@@ -45,6 +55,9 @@ export default function Staff() {
 							<StyledTableCell>Name</StyledTableCell>
 							<StyledTableCell>Staff</StyledTableCell>
 							<StyledTableCell>No of students</StyledTableCell>
+							<StyledTableCell>Add student</StyledTableCell>
+							<StyledTableCell>View</StyledTableCell>
+							<StyledTableCell>Edit</StyledTableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -57,33 +70,32 @@ export default function Staff() {
 									<StyledTableCell>{val.name}</StyledTableCell>
 									<StyledTableCell>{val.staff}</StyledTableCell>
 									<StyledTableCell>{val.noOfStudents}</StyledTableCell>
+									<StyledTableCell>
+										<IconButton onClick={() => setOpenAddStudent(true)}>
+											<AddOutlinedIcon />
+										</IconButton>
+									</StyledTableCell>
+									<StyledTableCell>
+										<IconButton onClick={() => setOpenView(true)}>
+											<VisibilityOutlinedIcon />
+										</IconButton>
+									</StyledTableCell>
+									<StyledTableCell>
+										<IconButton onClick={() => setOpenUpdate(true)}>
+											<EditOutlinedIcon />
+										</IconButton>
+									</StyledTableCell>
 								</StyledTableRow>
 							);
 						})}
 					</TableBody>
 				</Table>
 			</TableContainer>
-			<Modal title={'Add section'} open={open} setOpen={setOpen}>
-				<form>
-					<TextField label='Name' required name='name' />
-					<TextField label='Staff ID' required name='staffID' />
-					<Box display='flex' justifyContent='flex-end'>
-						<Button
-							variant='contained'
-							color='primary'
-							type='button'
-							onClick={() => setOpen(false)}
-							className={classes.cancelBtn}
-						>
-							Cancel
-						</Button>
-						<Button variant='contained' color='primary' type='submit'>
-							Add
-						</Button>
-					</Box>
-				</form>
-			</Modal>
-			<Fab color='secondary' className={classes.float} onClick={() => setOpen(true)}>
+			<Add open={openAdd} setOpen={setOpenAdd} />
+			<AddStudent open={openAddStudent} setOpen={setOpenAddStudent} />
+			<Edit open={openUpdate} setOpen={setOpenUpdate} />
+			<View open={openView} setOpen={setOpenView} />
+			<Fab color='secondary' className={classes.float} onClick={() => setOpenAdd(true)}>
 				<AddIcon />
 			</Fab>
 		</section>
