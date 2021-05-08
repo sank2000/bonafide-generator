@@ -8,11 +8,11 @@ const useStyles = makeStyles({
 	...adminLayout
 });
 
-export default function Add({ open, setOpen }) {
+export default function Edit({ open, setOpen }) {
 	const classes = useStyles();
 
 	return (
-		<Modal title={'Add Admin'} open={open} setOpen={setOpen}>
+		<Modal title={'Edit Admin'} open={open} setOpen={setOpen}>
 			<form>
 				<TextField label='Name' required name='name' />
 				<TextField label='Image URL' required name='imageURL' />
