@@ -5,8 +5,23 @@ import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import DoneOutlineOutlinedIcon from '@material-ui/icons/DoneOutlineOutlined';
 import { rgba } from 'polished';
+import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
 
 import { FlexContainer } from 'components';
+import PdfDocument from './PdfDocument';
+
+const buttonStyle = {
+	fontFamily: 'Poppins',
+	textTransform: 'uppercase',
+	fontWeight: 500,
+	color: '#fff',
+	backgroundColor: '#a61d22',
+	textDecoration: 'none',
+	padding: '8px 22px',
+	borderRadius: '4px',
+	boxShadow:
+		'0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)'
+};
 
 export default function Bonafide() {
 	const [step] = useState(3);
@@ -40,19 +55,14 @@ export default function Bonafide() {
 						</Stat>
 					</Tooltip>
 				</Stats>
-				<Button variant='contained' color='primary' size='large'>
-					Download
-				</Button>
+				<PDFDownloadLink document={<PdfDocument />} fileName='bonafide.pdf' style={buttonStyle}>
+					{({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download Pdf')}
+				</PDFDownloadLink>
 			</StatsContainer>
 			<PdfContainer>
-				<object
-					width='100%'
-					height='1000'
-					data='http://www.africau.edu/images/default/sample.pdf'
-					type='application/pdf'
-				>
-					{' '}
-				</object>
+				<PDFViewer style={{ width: '100%', height: '600px' }}>
+					<PdfDocument />
+				</PDFViewer>
 			</PdfContainer>
 		</section>
 	);
@@ -104,4 +114,7 @@ const PdfContainer = styled.div`
 	margin: 0 auto;
 	width: 90%;
 	max-width: 1200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
