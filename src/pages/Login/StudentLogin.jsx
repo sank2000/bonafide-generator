@@ -21,7 +21,9 @@ export default function StudentLogin() {
 		if (selectedDate.toDateString() === 'Invalid Date') return;
 		login(setAuth, {
 			isAuth: true,
-			role: 'student'
+			role: 'student',
+			name: 'student',
+			token: '12asfffe23'
 		});
 		console.log({ registerNo, dob: selectedDate.toISOString() });
 		history.push('/');

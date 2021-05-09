@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useLocation } from 'react-router';
 import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { AccountCircleTwoTone as AccountCircle } from '@material-ui/icons';
 
 import Drawer from './SideBar';
+import Auth from 'contexts/Auth';
 
 const useStyles = makeStyles(theme => ({
 	grow: {
@@ -40,6 +41,7 @@ export default function NavBar() {
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 	const location = useLocation();
+	const { auth } = useContext(Auth);
 
 	const handleMobileMenuClose = () => {
 		setMobileMoreAnchorEl(null);
@@ -64,7 +66,7 @@ export default function NavBar() {
 			<MenuItem>
 				<div className={classes.active}>&nbsp;</div>
 				<Typography variant='h6' noWrap>
-					Welcome
+					{auth?.name}
 				</Typography>
 			</MenuItem>
 		</Menu>
@@ -81,7 +83,7 @@ export default function NavBar() {
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>
 						<Typography variant='h6' noWrap>
-							Welcome
+							{auth?.name}
 						</Typography>
 					</div>
 					<div className={classes.sectionMobile}>

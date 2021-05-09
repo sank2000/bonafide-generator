@@ -27,7 +27,9 @@ export default function Login() {
 		e.preventDefault();
 		login(setAuth, {
 			isAuth: true,
-			role
+			role,
+			name: role,
+			token: '12asfffe23'
 		});
 		console.log(data);
 	};

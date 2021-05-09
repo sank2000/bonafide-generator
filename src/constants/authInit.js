@@ -1,6 +1,8 @@
 const auth = {
 	isAuth: false,
-	role: ''
+	role: '',
+	name: '',
+	token: ''
 };
 
 export default auth;
