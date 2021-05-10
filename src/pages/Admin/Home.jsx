@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
 import { rgba } from 'polished';
+import axios from 'axios';
 
 import { FlexContainer } from 'components';
 import { useHistory } from 'react-router';
@@ -9,16 +10,25 @@ import { useHistory } from 'react-router';
 export default function Home() {
 	const [loadCount, setLoadCount] = useState(true);
 	const [random, setRandom] = useState(0);
+	const [countData, setCountData] = useState({});
 	const history = useHistory();
+
+	const getCount = async () => {
+		try {
+			const { data } = await axios.get('/admin/count');
+			setCountData(data);
+			setLoadCount(false);
+		} catch (error) {
+			error.handleGlobally && error.handleGlobally();
+		}
+	};
 
 	useEffect(() => {
 		const timer = setInterval(() => {
 			setRandom(Math.floor(Math.random() * Math.floor(100)));
 		});
 
-		setTimeout(() => {
-			setLoadCount(false);
-		}, [3000]);
+		getCount();
 
 		return () => {
 			clearInterval(timer);
@@ -30,25 +40,29 @@ export default function Home() {
 			title: 'Staffs',
 			image: '/images/staff.png',
 			path: '/staff',
-			count: 10
+			count: 10,
+			key: 'staffCount'
 		},
 		{
 			title: 'Students',
 			image: '/images/student.png',
 			path: '/student',
-			count: 69
+			count: 69,
+			key: 'studentCount'
 		},
 		{
 			title: 'Sections',
 			image: '/images/section.png',
 			path: '/section',
-			count: 2
+			count: 2,
+			key: 'sectionCount'
 		},
 		{
 			title: 'Admin',
 			image: '/images/admin.png',
 			path: '/admin',
-			count: 3
+			count: 3,
+			key: 'adminCount'
 		}
 	];
 
@@ -63,7 +77,7 @@ export default function Home() {
 									{val.title}
 								</Typography>
 								<Typography variant='h2' style={{ fontWeight: '600' }} color='primary'>
-									{loadCount ? random + val.count : val.count}
+									{loadCount ? random + val.count : countData[val.key]}
 								</Typography>
 							</div>
 							<img src={val.image} alt='admin'></img>

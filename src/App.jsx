@@ -16,9 +16,6 @@ import { Alert } from 'components';
 import { logout } from 'pages/Login/function';
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4000/';
-axios.defaults.headers.common['Authorization'] = localStorage.getItem('auth')
-	? JSON.parse(localStorage.getItem('auth')).token
-	: '';
 
 export default function App() {
 	const [auth, setAuth] = useState(() =>
@@ -61,6 +58,15 @@ export default function App() {
 			}
 		};
 	};
+
+	// Set the AUTH token for any request
+	axios.interceptors.request.use(function (req) {
+		const token = localStorage.getItem('auth')
+			? JSON.parse(localStorage.getItem('auth')).token
+			: '';
+		req.headers.Authorization = `Bearer ${token}`;
+		return req;
+	});
 
 	axios.interceptors.response.use(undefined, function (error) {
 		error.handleGlobally = errorComposer(error);
