@@ -25,6 +25,17 @@ const buttonStyle = {
 
 export default function Bonafide() {
 	const [step] = useState(3);
+	const [pdfLoading, setPdfLoading] = useState(true);
+	const data = {
+		profileImg:
+			'https://image.shutterstock.com/image-vector/business-man-icon-trendy-flat-260nw-1041223936.jpg',
+		name: 'Santhosh K',
+		registerNo: '810018104080',
+		degree: 'BE',
+		department: 'CSE',
+		batch: '2019 - 2022',
+		createdDate: new Date().toISOString()
+	};
 
 	return (
 		<section>
@@ -55,15 +66,25 @@ export default function Bonafide() {
 						</Stat>
 					</Tooltip>
 				</Stats>
-				<PDFDownloadLink document={<PdfDocument />} fileName='bonafide.pdf' style={buttonStyle}>
-					{({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download Pdf')}
+				<PDFDownloadLink
+					document={<PdfDocument data={data} />}
+					fileName='bonafide.pdf'
+					style={buttonStyle}
+				>
+					{({ blob, url, loading, error }) => {
+						if (!loading) setPdfLoading(false);
+						if (error) setPdfLoading(true);
+						return loading ? 'Loading document...' : 'Download Pdf';
+					}}
 				</PDFDownloadLink>
 			</StatsContainer>
-			<PdfContainer>
-				<PDFViewer style={{ width: '100%', height: '600px' }}>
-					<PdfDocument />
-				</PDFViewer>
-			</PdfContainer>
+			{!pdfLoading && (
+				<PdfContainer>
+					<PDFViewer style={{ width: '100%', height: '600px' }}>
+						<PdfDocument data={data} />
+					</PDFViewer>
+				</PdfContainer>
+			)}
 		</section>
 	);
 }
