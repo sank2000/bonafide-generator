@@ -15,7 +15,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import colors from 'constants/colors';
 import logo from 'assets/logo';
 import Auth from 'contexts/Auth';
-import authInit from 'constants/authInit';
+import { logout } from 'pages/Login/function';
 
 const useStyles = makeStyles(theme => ({
 	list: {
@@ -81,11 +81,8 @@ export default function SideBar() {
 		setDrawerOpen(false);
 		setOpen(true);
 		setTimeout(() => {
-			localStorage.removeItem('auth');
-			setAuth({
-				...authInit
-			});
-		}, 3000);
+			logout(setAuth);
+		}, 1000);
 	};
 
 	const links = {

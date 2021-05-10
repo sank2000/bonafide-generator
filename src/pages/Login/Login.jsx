@@ -2,16 +2,18 @@ import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Typography, TextField, Button } from '@material-ui/core';
 import { useParams } from 'react-router';
+import axios from 'axios';
 
-import { BgContainer, FlexContainer } from 'components';
+import { BgContainer, ButtonLoader, FlexContainer } from 'components';
 import Auth from 'contexts/Auth';
 import { login } from './function';
 
 export default function Login() {
 	const { role } = useParams();
 	const { setAuth } = useContext(Auth);
+	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState({
-		id: '',
+		email: '',
 		password: ''
 	});
 
@@ -23,15 +25,23 @@ export default function Login() {
 		}));
 	};
 
-	const handleSubmit = e => {
+	const handleSubmit = async e => {
 		e.preventDefault();
-		login(setAuth, {
-			isAuth: true,
-			role,
-			name: role,
-			token: '12asfffe23'
-		});
-		console.log(data);
+		if (loading) return;
+		setLoading(true);
+		try {
+			const { data: resData } = await axios.post('/admin/login', { ...data });
+			setLoading(false);
+			login(setAuth, {
+				isAuth: true,
+				role,
+				name: resData.name,
+				token: resData.token
+			});
+		} catch (error) {
+			setLoading(false);
+			error.handleGlobally && error.handleGlobally();
+		}
 	};
 
 	return (
@@ -42,7 +52,14 @@ export default function Login() {
 					LOGIN
 				</Typography>
 				<form onSubmit={handleSubmit}>
-					<TextField label='ID' required name='id' value={data.id} onChange={handleChange} />
+					<TextField
+						label='Email'
+						required
+						name='email'
+						type='email'
+						value={data.email}
+						onChange={handleChange}
+					/>
 					<TextField
 						label='Password'
 						required
@@ -52,7 +69,7 @@ export default function Login() {
 						onChange={handleChange}
 					/>
 					<Button variant='contained' color='primary' type='submit'>
-						LOGIN
+						LOGIN {loading && <ButtonLoader />}
 					</Button>
 				</form>
 			</Box>
