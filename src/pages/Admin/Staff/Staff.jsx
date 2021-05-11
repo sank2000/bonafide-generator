@@ -117,7 +117,12 @@ export default function Staff() {
 			)}
 			{loading && <PageLoader />}
 			<Add open={openAdd} setOpen={setOpenAdd} setLoadData={setLoadData} />
-			<Edit open={openUpdate} setOpen={setOpenUpdate} setLoadData={setLoadData} data={activeDoc} />
+			<Edit
+				open={openUpdate}
+				setOpen={setOpenUpdate}
+				setLoadData={setLoadData}
+				activeData={activeDoc}
+			/>
 			<View open={openView} setOpen={setOpenView} setLoadData={setLoadData} data={activeDoc} />
 			<Dialog
 				title='Conform'
