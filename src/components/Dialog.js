@@ -7,7 +7,16 @@ import {
 	DialogTitle
 } from '@material-ui/core';
 
-export default function CustomDialog({ title, description, open, handleClose, handleConform }) {
+import ButtonLoader from './ButtonLoader';
+
+export default function CustomDialog({
+	title,
+	description,
+	loading,
+	open,
+	handleClose,
+	handleConform
+}) {
 	return (
 		<Dialog open={open} onClose={handleClose} disableBackdropClick>
 			<DialogTitle>{title}</DialogTitle>
@@ -19,7 +28,7 @@ export default function CustomDialog({ title, description, open, handleClose, ha
 					No
 				</Button>
 				<Button onClick={handleConform} color='primary' autoFocus>
-					Yes
+					Yes {loading && <ButtonLoader />}
 				</Button>
 			</DialogActions>
 		</Dialog>

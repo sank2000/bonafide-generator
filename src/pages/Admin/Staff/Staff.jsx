@@ -36,6 +36,7 @@ export default function Staff() {
 	const [openDelete, setOpenDelete] = useState(false);
 	const [activeDoc, setActiveDoc] = useState({});
 	const [loading, setLoading] = useState(false);
+	const [buttonLoading, setButtonLoading] = useState(false);
 	const [data, setData] = useState([]);
 
 	const getStaff = async () => {
@@ -54,7 +55,20 @@ export default function Staff() {
 		state(true);
 	};
 
-	const handleDelete = () => {
+	const handleDelete = async () => {
+		setButtonLoading(true);
+		try {
+			await axios.delete('/admin/staff/delete', {
+				data: {
+					id: activeDoc._id
+				}
+			});
+			setButtonLoading(false);
+			setLoadData(old => !old);
+		} catch (error) {
+			setButtonLoading(false);
+			error.handleGlobally && error.handleGlobally();
+		}
 		setOpenDelete(false);
 	};
 
@@ -128,7 +142,10 @@ export default function Staff() {
 				title='Conform'
 				description='Are you sure to delete this?'
 				open={openDelete}
-				handleClose={() => setOpenDelete(false)}
+				loading={buttonLoading}
+				handleClose={() => {
+					if (!buttonLoading) setOpenDelete(false);
+				}}
 				handleConform={handleDelete}
 			/>
 			<Fab color='secondary' className={classes.float} onClick={() => setOpenAdd(true)}>
