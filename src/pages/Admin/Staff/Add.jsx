@@ -2,10 +2,11 @@ import { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button, Box, MenuItem } from '@material-ui/core';
 import axios from 'axios';
-import Snack from 'contexts/Snack';
 
+import Snack from 'contexts/Snack';
 import { ButtonLoader, Modal, Select } from 'components';
 import { adminLayout } from 'constants/classes';
+import { handleChange } from 'functions';
 
 const useStyles = makeStyles({
 	...adminLayout
@@ -27,14 +28,6 @@ export default function Add({ open, setOpen, setLoadData }) {
 		email: '',
 		section: ''
 	});
-
-	const handleChange = e => {
-		const { name, value } = e.target;
-		setData(old => ({
-			...old,
-			[name]: value
-		}));
-	};
 
 	const handleSubmit = async e => {
 		e.preventDefault();
@@ -68,19 +61,25 @@ export default function Add({ open, setOpen, setLoadData }) {
 	return (
 		<Modal title={'Add staff'} open={open} setOpen={setOpen} disableClose={loading}>
 			<form onSubmit={handleSubmit}>
-				<TextField label='Name' required name='name' value={data.name} onChange={handleChange} />
+				<TextField
+					label='Name'
+					required
+					name='name'
+					value={data.name}
+					onChange={handleChange(setData)}
+				/>
 				<TextField
 					label='Profile Img'
 					required
 					name='profileImg'
 					value={data.profileImg}
-					onChange={handleChange}
+					onChange={handleChange(setData)}
 				/>
 				<Select
 					label='Designation'
 					name='designation'
 					value={data.designation}
-					onChange={handleChange}
+					onChange={handleChange(setData)}
 				>
 					<MenuItem value=''>
 						<em>None</em>
@@ -93,7 +92,7 @@ export default function Add({ open, setOpen, setLoadData }) {
 					name='department'
 					label='Department'
 					value={data.department}
-					onChange={handleChange}
+					onChange={handleChange(setData)}
 				>
 					<MenuItem value=''>
 						<em>None</em>
@@ -108,14 +107,14 @@ export default function Add({ open, setOpen, setLoadData }) {
 					required
 					name='campus'
 					value={data.campus}
-					onChange={handleChange}
+					onChange={handleChange(setData)}
 				/>
 				<TextField
 					label='Phone Number'
 					required
 					name='phoneNumber'
 					value={data.phoneNumber}
-					onChange={handleChange}
+					onChange={handleChange(setData)}
 				/>
 				<TextField
 					label='Email'
@@ -123,14 +122,14 @@ export default function Add({ open, setOpen, setLoadData }) {
 					required
 					name='email'
 					value={data.email}
-					onChange={handleChange}
+					onChange={handleChange(setData)}
 				/>
 				<TextField
 					label='Section ID'
 					required
 					name='section'
 					value={data.section}
-					onChange={handleChange}
+					onChange={handleChange(setData)}
 				/>
 				<TextField
 					label='Password'
@@ -138,7 +137,7 @@ export default function Add({ open, setOpen, setLoadData }) {
 					type='password'
 					name='password'
 					value={data.password}
-					onChange={handleChange}
+					onChange={handleChange(setData)}
 				/>
 				<TextField
 					label='Conform Password'
@@ -146,7 +145,7 @@ export default function Add({ open, setOpen, setLoadData }) {
 					type='password'
 					name='c_password'
 					value={data.c_password}
-					onChange={handleChange}
+					onChange={handleChange(setData)}
 				/>
 				<Box display='flex' justifyContent='flex-end'>
 					<Button
