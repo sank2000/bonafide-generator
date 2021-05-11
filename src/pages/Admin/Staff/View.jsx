@@ -8,7 +8,7 @@ export default function View({ open, setOpen, data }) {
 		<Modal title={'View'} open={open} setOpen={setOpen}>
 			<Div>
 				<div className='imgContainer'>
-					<img src={data.name ?? '/images/staff.png'} alt='pro'></img>
+					<img src={data.profileImg ?? '/images/staff.png'} alt='pro'></img>
 				</div>
 			</Div>
 			<div style={{ overflowX: 'auto' }}>

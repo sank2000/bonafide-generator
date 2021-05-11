@@ -31,6 +31,7 @@ export default function Staff() {
 	const classes = useStyles();
 	const [openAdd, setOpenAdd] = useState(false);
 	const [openUpdate, setOpenUpdate] = useState(false);
+	const [loadData, setLoadData] = useState(false);
 	const [openView, setOpenView] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);
 	const [activeDoc, setActiveDoc] = useState({});
@@ -59,7 +60,7 @@ export default function Staff() {
 
 	useEffect(() => {
 		getStaff();
-	}, []);
+	}, [loadData]);
 
 	return (
 		<section className={classes.section}>
@@ -115,9 +116,9 @@ export default function Staff() {
 				</TableContainer>
 			)}
 			{loading && <PageLoader />}
-			<Add open={openAdd} setOpen={setOpenAdd} />
-			<Edit open={openUpdate} setOpen={setOpenUpdate} data={activeDoc} />
-			<View open={openView} setOpen={setOpenView} data={activeDoc} />
+			<Add open={openAdd} setOpen={setOpenAdd} setLoadData={setLoadData} />
+			<Edit open={openUpdate} setOpen={setOpenUpdate} setLoadData={setLoadData} data={activeDoc} />
+			<View open={openView} setOpen={setOpenView} setLoadData={setLoadData} data={activeDoc} />
 			<Dialog
 				title='Conform'
 				description='Are you sure to delete this?'
