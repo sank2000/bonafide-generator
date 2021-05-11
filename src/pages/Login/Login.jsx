@@ -30,7 +30,8 @@ export default function Login() {
 		if (loading) return;
 		setLoading(true);
 		try {
-			const { data: resData } = await axios.post('/admin/login', { ...data });
+			const url = role === 'admin' ? '/admin/login' : '/staff/login';
+			const { data: resData } = await axios.post(url, { ...data });
 			setLoading(false);
 			login(setAuth, {
 				isAuth: true,
