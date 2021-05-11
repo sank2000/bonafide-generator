@@ -28,7 +28,10 @@ export default function App() {
 		if (reason === 'clickaway') {
 			return;
 		}
-		setSnack(snackInit);
+		setSnack(old => ({
+			...old,
+			open: false
+		}));
 	};
 
 	const errorComposer = error => {
