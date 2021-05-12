@@ -1,10 +1,10 @@
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { Typography, TextField, Button } from '@material-ui/core';
+import { Typography, TextField } from '@material-ui/core';
 import { useParams } from 'react-router';
 import axios from 'axios';
 
-import { BgContainer, ButtonLoader, FlexContainer } from 'components';
+import { BgContainer, ButtonWithLoader, FlexContainer } from 'components';
 import Auth from 'contexts/Auth';
 import { login } from './function';
 
@@ -69,9 +69,7 @@ export default function Login() {
 						value={data.password}
 						onChange={handleChange}
 					/>
-					<Button variant='contained' color='primary' type='submit'>
-						LOGIN {loading && <ButtonLoader />}
-					</Button>
+					<ButtonWithLoader loading={loading} text='LOGIN' />
 				</form>
 			</Box>
 		</BgContainer>

@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button, Box, MenuItem } from '@material-ui/core';
 import axios from 'axios';
 
-import { Modal, Select, ButtonLoader } from 'components';
+import { Modal, Select, ButtonWithLoader } from 'components';
 import { adminLayout } from 'constants/classes';
 import Snack from 'contexts/Snack';
 import { handleChange } from 'functions';
@@ -163,9 +163,7 @@ export default function Edit({ open, setOpen, setLoadData, activeData }) {
 					>
 						Cancel
 					</Button>
-					<Button variant='contained' color='primary' type='submit'>
-						Update {loading && <ButtonLoader />}
-					</Button>
+					<ButtonWithLoader loading={loading} text='Update' />
 				</Box>
 			</form>
 		</Modal>

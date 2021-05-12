@@ -4,7 +4,7 @@ import { TextField, Button, Box, MenuItem } from '@material-ui/core';
 import axios from 'axios';
 
 import Snack from 'contexts/Snack';
-import { ButtonLoader, Modal, Select } from 'components';
+import { ButtonWithLoader, Modal, Select } from 'components';
 import { adminLayout } from 'constants/classes';
 import { handleChange } from 'functions';
 
@@ -160,9 +160,7 @@ export default function Add({ open, setOpen, setLoadData }) {
 					>
 						Cancel
 					</Button>
-					<Button variant='contained' color='primary' type='submit'>
-						Add {loading && <ButtonLoader />}
-					</Button>
+					<ButtonWithLoader loading={loading} text='Add' />
 				</Box>
 			</form>
 		</Modal>

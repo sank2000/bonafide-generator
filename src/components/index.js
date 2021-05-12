@@ -7,6 +7,7 @@ export { default as TablePaginationAction } from './TablePaginationAction';
 export { default as Dialog } from './Dialog';
 export { default as Alert } from './Alert';
 export { default as ButtonLoader } from './ButtonLoader';
+export { default as ButtonWithLoader } from './ButtonWithLoader';
 export { default as PageLoader } from './PageLoader';
 export { default as Select } from './Select';
 export * from './Table';
