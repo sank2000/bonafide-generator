@@ -10,4 +10,5 @@ export { default as ButtonLoader } from './ButtonLoader';
 export { default as ButtonWithLoader } from './ButtonWithLoader';
 export { default as PageLoader } from './PageLoader';
 export { default as Select } from './Select';
+export { default as NotFound } from './NotFound';
 export * from './Table';

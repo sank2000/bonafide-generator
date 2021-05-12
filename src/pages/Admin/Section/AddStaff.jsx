@@ -12,26 +12,26 @@ const useStyles = makeStyles({
 	...adminLayout
 });
 
-export default function AddStudent({ open, setOpen, sectionID, setLoadData }) {
+export default function AddStaff({ open, setOpen, sectionID, setLoadData }) {
 	const classes = useStyles();
 	const { setSnack } = useContext(Snack);
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState({
-		studentId: ''
+		staffId: ''
 	});
 
 	const handleSubmit = async e => {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			await axios.put('/admin/section/update/student', {
+			await axios.put('/admin/section/update/staff', {
 				...data,
 				id: sectionID
 			});
 			setLoading(false);
 			setSnack({
 				open: true,
-				message: 'Student successfully added!',
+				message: 'Staff successfully added!',
 				type: 'success'
 			});
 			setTimeout(() => {
@@ -45,14 +45,14 @@ export default function AddStudent({ open, setOpen, sectionID, setLoadData }) {
 	};
 
 	return (
-		<Modal title={'Add Student'} open={open} setOpen={setOpen} disableClose={loading}>
+		<Modal title={'Add Staff'} open={open} setOpen={setOpen} disableClose={loading}>
 			<form onSubmit={handleSubmit}>
-				<TextField label='Section' required value={sectionID} disabled />
+				<TextField label='Section ID' required value={sectionID} disabled />
 				<TextField
-					label='Student ID'
+					label='Staff ID'
 					required
-					name='studentId'
-					value={data.studentId}
+					name='staffId'
+					value={data.staffId}
 					onChange={handleChange(setData)}
 				/>
 				<Box display='flex' justifyContent='flex-end'>

@@ -21,7 +21,7 @@ export default function Staff() {
 	const classes = useStyles();
 	const [openAdd, setOpenAdd] = useState(false);
 	const [openUpdate, setOpenUpdate] = useState(false);
-	const [openView, setOpenView] = useState(false);
+	const [viewDoc, setViewDoc] = useState(null);
 	const [activeDoc, setActiveDoc] = useState({});
 	const [loadData, setLoadData] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -76,7 +76,7 @@ export default function Staff() {
 										<StyledTableCell>{val.staffs?.length}</StyledTableCell>
 										<StyledTableCell>{val.students?.length}</StyledTableCell>
 										<StyledTableCell>
-											<IconButton onClick={() => handleSetActive(setOpenView, val)}>
+											<IconButton onClick={() => setViewDoc(val)}>
 												<VisibilityOutlinedIcon />
 											</IconButton>
 										</StyledTableCell>
@@ -100,7 +100,7 @@ export default function Staff() {
 				activeDoc={activeDoc}
 				setLoadData={setLoadData}
 			/>
-			<View open={openView} setOpen={setOpenView} activeDoc={activeDoc} />
+			<View viewDoc={viewDoc} activeDoc={activeDoc} setLoadData={setLoadData} loadData={loadData} />
 			<Fab color='secondary' className={classes.float} onClick={() => setOpenAdd(true)}>
 				<AddIcon />
 			</Fab>
