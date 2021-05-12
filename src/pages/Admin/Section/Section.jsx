@@ -94,7 +94,12 @@ export default function Staff() {
 			)}
 			{loading && <PageLoader />}
 			<Add open={openAdd} setOpen={setOpenAdd} setLoadData={setLoadData} />
-			<Edit open={openUpdate} setOpen={setOpenUpdate} activeDoc={activeDoc} />
+			<Edit
+				open={openUpdate}
+				setOpen={setOpenUpdate}
+				activeDoc={activeDoc}
+				setLoadData={setLoadData}
+			/>
 			<View open={openView} setOpen={setOpenView} activeDoc={activeDoc} />
 			<Fab color='secondary' className={classes.float} onClick={() => setOpenAdd(true)}>
 				<AddIcon />
