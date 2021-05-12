@@ -18,25 +18,15 @@ export default function Edit({ open, setOpen, setLoadData, activeData }) {
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState({
 		...activeData,
-		password: '',
-		c_password: '',
 		section: activeData?.section?._id ?? ''
 	});
 
 	const handleSubmit = async e => {
 		e.preventDefault();
-		if (data.password !== data.c_password) {
-			return setSnack({
-				open: true,
-				message: 'Password are not same',
-				type: 'error'
-			});
-		}
 		setLoading(true);
-		const { c_password, ...postData } = data;
 		try {
 			await axios.put('/admin/staff/update', {
-				...postData,
+				...data,
 				id: activeData._id
 			});
 			setLoading(false);
@@ -58,8 +48,6 @@ export default function Edit({ open, setOpen, setLoadData, activeData }) {
 	useEffect(() => {
 		setData({
 			...activeData,
-			password: '',
-			c_password: '',
 			section: activeData?.section?._id ?? ''
 		});
 	}, [activeData]);
@@ -135,22 +123,6 @@ export default function Edit({ open, setOpen, setLoadData, activeData }) {
 					required
 					name='section'
 					value={data.section}
-					onChange={handleChange(setData)}
-				/>
-				<TextField
-					label='Password'
-					required
-					type='password'
-					name='password'
-					value={data.password}
-					onChange={handleChange(setData)}
-				/>
-				<TextField
-					label='Conform Password'
-					required
-					type='password'
-					name='c_password'
-					value={data.c_password}
 					onChange={handleChange(setData)}
 				/>
 				<Box display='flex' justifyContent='flex-end'>
