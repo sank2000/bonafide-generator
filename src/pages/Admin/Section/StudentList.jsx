@@ -12,9 +12,10 @@ import {
 	Box
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 
-import { StyledTableCell, StyledTableRow, NotFound } from 'components';
+import { StyledTableCell, StyledTableRow, NotFound, Dialog } from 'components';
 import { adminLayout } from 'constants/classes';
 import AddStudent from './AddStudent';
 
@@ -25,6 +26,27 @@ const useStyles = makeStyles({
 export default function StudentList({ list, sectionID, setLoadData }) {
 	const classes = useStyles();
 	const [openAdd, setOpenAdd] = useState(false);
+	const [openDelete, setOpenDelete] = useState(false);
+	const [buttonLoading, setButtonLoading] = useState(false);
+	const [activeDoc, setActiveDoc] = useState({});
+
+	const handleDelete = async () => {
+		setButtonLoading(true);
+		try {
+			await axios.delete('/admin/section/update/student', {
+				data: {
+					studentId: activeDoc._id,
+					id: sectionID
+				}
+			});
+			setButtonLoading(false);
+			setLoadData(old => !old);
+		} catch (error) {
+			setButtonLoading(false);
+			error.handleGlobally && error.handleGlobally();
+		}
+		setOpenDelete(false);
+	};
 
 	return (
 		<div className={classes.table}>
@@ -55,12 +77,17 @@ export default function StudentList({ list, sectionID, setLoadData }) {
 									<StyledTableCell component='th' scope='row'>
 										{val.registerNumber}
 									</StyledTableCell>
-									<StyledTableCell>{val.degree}</StyledTableCell>
 									<StyledTableCell>{val.name}</StyledTableCell>
+									<StyledTableCell>{val.degree}</StyledTableCell>
 									<StyledTableCell>{val.department}</StyledTableCell>
 									<StyledTableCell>{val.campus}</StyledTableCell>
 									<StyledTableCell>
-										<IconButton onClick={null}>
+										<IconButton
+											onClick={() => {
+												setActiveDoc(val);
+												setOpenDelete(true);
+											}}
+										>
 											<DeleteForeverOutlinedIcon />
 										</IconButton>
 									</StyledTableCell>
@@ -71,6 +98,16 @@ export default function StudentList({ list, sectionID, setLoadData }) {
 				</Table>
 				{list?.length === 0 && <NotFound />}
 			</TableContainer>
+			<Dialog
+				title='Conform'
+				description='Are you sure to remove this student from section?'
+				open={openDelete}
+				loading={buttonLoading}
+				handleClose={() => {
+					if (!buttonLoading) setOpenDelete(false);
+				}}
+				handleConform={handleDelete}
+			/>
 			<AddStudent
 				open={openAdd}
 				setOpen={setOpenAdd}

@@ -12,9 +12,10 @@ import {
 	Box
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 
-import { StyledTableCell, StyledTableRow, NotFound } from 'components';
+import { StyledTableCell, StyledTableRow, NotFound, Dialog } from 'components';
 import { adminLayout } from 'constants/classes';
 import AddStaff from './AddStaff';
 
@@ -25,6 +26,27 @@ const useStyles = makeStyles({
 export default function StaffList({ list, sectionID, setLoadData }) {
 	const classes = useStyles();
 	const [openAdd, setOpenAdd] = useState(false);
+	const [openDelete, setOpenDelete] = useState(false);
+	const [buttonLoading, setButtonLoading] = useState(false);
+	const [activeDoc, setActiveDoc] = useState({});
+
+	const handleDelete = async () => {
+		setButtonLoading(true);
+		try {
+			await axios.delete('/admin/section/update/staff', {
+				data: {
+					staffId: activeDoc._id,
+					id: sectionID
+				}
+			});
+			setButtonLoading(false);
+			setLoadData(old => !old);
+		} catch (error) {
+			setButtonLoading(false);
+			error.handleGlobally && error.handleGlobally();
+		}
+		setOpenDelete(false);
+	};
 
 	return (
 		<div className={classes.table}>
@@ -60,7 +82,12 @@ export default function StaffList({ list, sectionID, setLoadData }) {
 									<StyledTableCell>{val.campus}</StyledTableCell>
 									<StyledTableCell>{val.email}</StyledTableCell>
 									<StyledTableCell>
-										<IconButton onClick={null}>
+										<IconButton
+											onClick={() => {
+												setActiveDoc(val);
+												setOpenDelete(true);
+											}}
+										>
 											<DeleteForeverOutlinedIcon />
 										</IconButton>
 									</StyledTableCell>
@@ -71,6 +98,16 @@ export default function StaffList({ list, sectionID, setLoadData }) {
 				</Table>
 				{list?.length === 0 && <NotFound />}
 			</TableContainer>
+			<Dialog
+				title='Conform'
+				description='Are you sure to remove this staff from section?'
+				open={openDelete}
+				loading={buttonLoading}
+				handleClose={() => {
+					if (!buttonLoading) setOpenDelete(false);
+				}}
+				handleConform={handleDelete}
+			/>
 			<AddStaff
 				open={openAdd}
 				setOpen={setOpenAdd}
