@@ -17,8 +17,7 @@ export default function Edit({ open, setOpen, setLoadData, activeData }) {
 	const { setSnack } = useContext(Snack);
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState({
-		...activeData,
-		section: activeData?.section?._id ?? ''
+		...activeData
 	});
 
 	const handleSubmit = async e => {
@@ -47,8 +46,7 @@ export default function Edit({ open, setOpen, setLoadData, activeData }) {
 
 	useEffect(() => {
 		setData({
-			...activeData,
-			section: activeData?.section?._id ?? ''
+			...activeData
 		});
 	}, [activeData]);
 
@@ -116,13 +114,6 @@ export default function Edit({ open, setOpen, setLoadData, activeData }) {
 					required
 					name='email'
 					value={data.email}
-					onChange={handleChange(setData)}
-				/>
-				<TextField
-					label='Section ID'
-					required
-					name='section'
-					value={data.section}
 					onChange={handleChange(setData)}
 				/>
 				<Box display='flex' justifyContent='flex-end'>

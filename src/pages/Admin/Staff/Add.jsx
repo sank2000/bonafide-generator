@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button, Box, MenuItem } from '@material-ui/core';
 import axios from 'axios';
@@ -16,6 +16,7 @@ export default function Add({ open, setOpen, setLoadData }) {
 	const classes = useStyles();
 	const { setSnack } = useContext(Snack);
 	const [loading, setLoading] = useState(false);
+	const [section, setSection] = useState([]);
 	const [data, setData] = useState({
 		name: '',
 		profileImg: '',
@@ -57,6 +58,19 @@ export default function Add({ open, setOpen, setLoadData }) {
 			error.handleGlobally && error.handleGlobally();
 		}
 	};
+
+	const getSection = async () => {
+		try {
+			const { data: resData } = await axios.get('/admin/section/all');
+			setSection(resData.data);
+		} catch (error) {
+			error.handleGlobally && error.handleGlobally();
+		}
+	};
+
+	useEffect(() => {
+		getSection();
+	}, []);
 
 	return (
 		<Modal title={'Add staff'} open={open} setOpen={setOpen} disableClose={loading}>
@@ -124,13 +138,23 @@ export default function Add({ open, setOpen, setLoadData }) {
 					value={data.email}
 					onChange={handleChange(setData)}
 				/>
-				<TextField
+				<Select
 					label='Section ID'
-					required
 					name='section'
 					value={data.section}
 					onChange={handleChange(setData)}
-				/>
+				>
+					<MenuItem value=''>
+						<em>None</em>
+					</MenuItem>
+					{section.map((val, ind) => {
+						return (
+							<MenuItem key={ind} value={val._id}>
+								{val.name}
+							</MenuItem>
+						);
+					})}
+				</Select>
 				<TextField
 					label='Password'
 					required

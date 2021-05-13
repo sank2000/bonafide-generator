@@ -20,6 +20,9 @@ export default function View({ open, setOpen, data }) {
 						<RowWithTypography title={'Campus'} value={data.campus} />
 						<RowWithTypography title={'Phone'} value={data.phoneNumber} />
 						<RowWithTypography title={'Email'} value={data.email} />
+						{data.section?.name && (
+							<RowWithTypography title={'Section'} value={data.section?.name} />
+						)}
 					</tbody>
 				</table>
 			</div>
