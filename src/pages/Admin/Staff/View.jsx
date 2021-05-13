@@ -1,4 +1,3 @@
-import { Button, Box } from '@material-ui/core';
 import styled from 'styled-components';
 
 import { Modal, RowWithTypography } from 'components';
@@ -26,16 +25,11 @@ export default function View({ open, setOpen, data }) {
 					</tbody>
 				</table>
 			</div>
-			<Box display='flex' justifyContent='flex-end'>
-				<Button variant='contained' color='primary' type='button' onClick={() => setOpen(false)}>
-					close
-				</Button>
-			</Box>
 		</Modal>
 	);
 }
 
-const Div = styled.div`
+export const Div = styled.div`
 	text-align: center;
 	display: flex;
 	justify-content: center;
