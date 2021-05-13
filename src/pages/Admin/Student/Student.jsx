@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
 	Table,
 	TableContainer,
@@ -13,8 +13,9 @@ import AddIcon from '@material-ui/icons/Add';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
+import axios from 'axios';
 
-import { StyledTableCell, StyledTableRow, Dialog } from 'components';
+import { StyledTableCell, StyledTableRow, Dialog, PageLoader } from 'components';
 import { useAlStyles } from 'constants/classes';
 import Add from './Add';
 import Edit from './Edit';
@@ -24,43 +25,50 @@ export default function Student() {
 	const classes = useAlStyles();
 	const [openAdd, setOpenAdd] = useState(false);
 	const [openUpdate, setOpenUpdate] = useState(false);
+	const [loadData, setLoadData] = useState(false);
 	const [openView, setOpenView] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);
-	const data = [
-		{
-			registerNo: '810018104080',
-			name: 'Name',
-			degree: 'BE',
-			department: 'CSE',
-			campus: 'BIT'
-		},
-		{
-			registerNo: '810018104081',
-			name: 'Name',
-			degree: 'BE',
-			department: 'CSE',
-			campus: 'BIT'
-		},
-		{
-			registerNo: '810018104082',
-			name: 'Name',
-			degree: 'BE',
-			department: 'CSE',
-			campus: 'BIT'
+	const [activeDoc, setActiveDoc] = useState({});
+	const [loading, setLoading] = useState(false);
+	const [buttonLoading, setButtonLoading] = useState(false);
+	const [data, setData] = useState([]);
+
+	const getStudent = async () => {
+		setLoading(true);
+		try {
+			const { data: resData } = await axios.get('/admin/student/all');
+			setData(resData.data);
+			setLoading(false);
+		} catch (error) {
+			error.handleGlobally && error.handleGlobally();
 		}
-	];
+	};
 
-	const handleDelete = () => {
+	const handleSetActive = (state, value) => {
+		setActiveDoc(value);
+		state(true);
+	};
+
+	const handleDelete = async () => {
+		setButtonLoading(true);
+		try {
+			await axios.delete('/admin/student/delete', {
+				data: {
+					id: activeDoc._id
+				}
+			});
+			setButtonLoading(false);
+			setLoadData(old => !old);
+		} catch (error) {
+			setButtonLoading(false);
+			error.handleGlobally && error.handleGlobally();
+		}
 		setOpenDelete(false);
 	};
 
-	const handleOpenDelete = id => {
-		setOpenDelete(true);
-	};
-
-	const handleCloseDelete = () => {
-		setOpenDelete(false);
-	};
+	useEffect(() => {
+		getStudent();
+	}, [loadData]);
 
 	return (
 		<section className={classes.section}>
@@ -86,24 +94,24 @@ export default function Student() {
 							return (
 								<StyledTableRow key={ind}>
 									<StyledTableCell component='th' scope='row'>
-										{val.registerNo}
+										{val.registerNumber}
 									</StyledTableCell>
 									<StyledTableCell>{val.degree}</StyledTableCell>
 									<StyledTableCell>{val.name}</StyledTableCell>
 									<StyledTableCell>{val.department}</StyledTableCell>
 									<StyledTableCell>{val.campus}</StyledTableCell>
 									<StyledTableCell>
-										<IconButton onClick={() => setOpenView(true)}>
+										<IconButton onClick={() => handleSetActive(setOpenView, val)}>
 											<VisibilityOutlinedIcon />
 										</IconButton>
 									</StyledTableCell>
 									<StyledTableCell>
-										<IconButton onClick={() => setOpenUpdate(true)}>
+										<IconButton onClick={() => handleSetActive(setOpenUpdate, val)}>
 											<EditOutlinedIcon />
 										</IconButton>
 									</StyledTableCell>
 									<StyledTableCell>
-										<IconButton onClick={() => handleOpenDelete(ind + 1)}>
+										<IconButton onClick={() => handleSetActive(setOpenDelete, val)}>
 											<DeleteForeverOutlinedIcon />
 										</IconButton>
 									</StyledTableCell>
@@ -113,14 +121,23 @@ export default function Student() {
 					</TableBody>
 				</Table>
 			</TableContainer>
-			<Add open={openAdd} setOpen={setOpenAdd} />
-			<Edit open={openUpdate} setOpen={setOpenUpdate} />
-			<View open={openView} setOpen={setOpenView} />
+			{loading && <PageLoader />}
+			<Add open={openAdd} setOpen={setOpenAdd} setLoadData={setLoadData} />
+			<Edit
+				open={openUpdate}
+				setOpen={setOpenUpdate}
+				setLoadData={setLoadData}
+				activeData={activeDoc}
+			/>
+			<View open={openView} setOpen={setOpenView} setLoadData={setLoadData} data={activeDoc} />
 			<Dialog
 				title='Conform'
 				description='Are you sure to delete this?'
 				open={openDelete}
-				handleClose={handleCloseDelete}
+				loading={buttonLoading}
+				handleClose={() => {
+					if (!buttonLoading) setOpenDelete(false);
+				}}
 				handleConform={handleDelete}
 			/>
 			<Fab color='secondary' className={classes.float} onClick={() => setOpenAdd(true)}>
