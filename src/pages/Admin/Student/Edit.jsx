@@ -1,41 +1,151 @@
-import { useState } from 'react';
-import { TextField, Button, Box } from '@material-ui/core';
+import { useState, useContext, useEffect } from 'react';
+import { TextField, Button, Box, MenuItem } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { KeyboardDatePicker } from '@material-ui/pickers';
+import axios from 'axios';
+import { getYear } from 'date-fns';
 
-import { Modal } from 'components';
+import { Modal, Select, ButtonWithLoader } from 'components';
 import { useAlStyles } from 'constants/classes';
+import Snack from 'contexts/Snack';
+import { handleChange } from 'functions';
 
-export default function Edit({ open, setOpen }) {
+export default function Edit({ open, setOpen, setLoadData, activeData }) {
 	const classes = useAlStyles();
-	const [selectedDate, handleDateChange] = useState(new Date());
+	const { setSnack } = useContext(Snack);
+	const [loading, setLoading] = useState(false);
+	const [data, setData] = useState({
+		...activeData
+	});
+	const [selectedDOB, handleDOBChange] = useState(new Date());
+	const [selectedBatch, handleBatchChange] = useState(new Date());
+
+	const handleSubmit = async e => {
+		e.preventDefault();
+		setLoading(true);
+		try {
+			await axios.put('/admin/student/update', {
+				...data,
+				dateOfBirth: selectedDOB,
+				batch: `${getYear(selectedBatch)} - ${getYear(selectedBatch) + 4}`,
+				id: activeData._id
+			});
+			setLoading(false);
+			setSnack({
+				open: true,
+				message: 'Student updated successfully!',
+				type: 'success'
+			});
+			setTimeout(() => {
+				setLoadData(old => !old);
+				setOpen(false);
+			}, 2000);
+		} catch (error) {
+			setLoading(false);
+			error.handleGlobally && error.handleGlobally();
+		}
+	};
+
+	useEffect(() => {
+		if (activeData) {
+			setData({
+				...activeData
+			});
+			handleDOBChange(new Date(activeData.dateOfBirth));
+			handleBatchChange(new Date(activeData.batch?.split(' ')[0]));
+		}
+	}, [activeData]);
 
 	return (
-		<Modal title={'Edit student'} open={open} setOpen={setOpen}>
-			<form>
-				<TextField label='Register No' required name='registerNo' />
-				<TextField label='Name' required name='name' />
+		<Modal title={'Edit student'} open={open} setOpen={setOpen} disableClose={loading}>
+			<form onSubmit={handleSubmit}>
+				<TextField
+					label='Register No'
+					required
+					name='registerNumber'
+					value={data.registerNumber}
+					onChange={handleChange(setData)}
+				/>
+				<TextField
+					label='Name'
+					required
+					name='name'
+					value={data.name}
+					onChange={handleChange(setData)}
+				/>
 				<MuiPickersUtilsProvider utils={DateFnsUtils}>
 					<KeyboardDatePicker
 						label='DOB'
 						required
 						format='dd - MM - yyyy'
 						inputVariant='outlined'
-						value={selectedDate}
-						onChange={handleDateChange}
+						value={selectedDOB}
+						onChange={handleDOBChange}
 					/>
 				</MuiPickersUtilsProvider>
-				<TextField label='Image URL' required name='imageURL' />
-				<TextField label='Degree' required name='degree' />
-				<TextField label='Department' required name='department' />
-				<TextField label='Campus' required name='campus' />
-				<TextField label='Batch' required name='batch' />
-				<TextField label='Phone' required name='phone' />
-				<TextField label='Email' type='email' required name='email' />
-				<TextField label='Section ID' required name='sectionID' />
-				<TextField label='Password' required type='password' name='password' />
-				<TextField label='Conform Password' required type='password' name='c_password' />
+				<TextField
+					label='Profile Image'
+					required
+					name='profileImg'
+					value={data.profileImg}
+					onChange={handleChange(setData)}
+				/>
+				<Select name='degree' label='Degree' value={data.degree} onChange={handleChange(setData)}>
+					<MenuItem value=''>
+						<em>None</em>
+					</MenuItem>
+					<MenuItem value={'B.E'}>B.E</MenuItem>
+					<MenuItem value={'B.Tech'}>B.Tech</MenuItem>
+					<MenuItem value={'M.E'}>M.E</MenuItem>
+					<MenuItem value={'M.Tech'}>M.Tech</MenuItem>
+				</Select>
+				<Select
+					name='department'
+					label='Department'
+					value={data.department}
+					onChange={handleChange(setData)}
+				>
+					<MenuItem value=''>
+						<em>None</em>
+					</MenuItem>
+					<MenuItem value={'CSE'}>CSE</MenuItem>
+					<MenuItem value={'IT'}>IT</MenuItem>
+					<MenuItem value={'ECE'}>ECE</MenuItem>
+					<MenuItem value={'EEE'}>EEE</MenuItem>
+				</Select>
+				<MuiPickersUtilsProvider utils={DateFnsUtils}>
+					<KeyboardDatePicker
+						views={['year']}
+						label='Batch Starting'
+						required
+						inputVariant='outlined'
+						value={selectedBatch}
+						onChange={handleBatchChange}
+					/>
+				</MuiPickersUtilsProvider>
+				<TextField
+					label='Campus'
+					required
+					name='campus'
+					value={data.campus}
+					onChange={handleChange(setData)}
+				/>
+				<TextField
+					label='Phone Number'
+					required
+					name='phoneNumber'
+					value={data.phoneNumber}
+					onChange={handleChange(setData)}
+				/>
+				<TextField
+					label='Email'
+					type='email'
+					required
+					name='email'
+					value={data.email}
+					onChange={handleChange(setData)}
+				/>
 				<Box display='flex' justifyContent='flex-end'>
 					<Button
 						variant='contained'
@@ -46,9 +156,7 @@ export default function Edit({ open, setOpen }) {
 					>
 						Cancel
 					</Button>
-					<Button variant='contained' color='primary' type='submit'>
-						update
-					</Button>
+					<ButtonWithLoader loading={loading} text='Update' />
 				</Box>
 			</form>
 		</Modal>

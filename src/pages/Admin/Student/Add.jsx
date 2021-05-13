@@ -73,7 +73,7 @@ export default function Add({ open, setOpen, setLoadData }) {
 	}, []);
 
 	return (
-		<Modal title={'Add student'} open={open} setOpen={setOpen}>
+		<Modal title={'Add student'} open={open} setOpen={setOpen} disableClose={loading}>
 			<form onSubmit={handleSubmit}>
 				<TextField
 					label='Register No'
