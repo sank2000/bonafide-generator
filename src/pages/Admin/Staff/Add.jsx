@@ -1,19 +1,14 @@
 import { useState, useEffect, useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button, Box, MenuItem } from '@material-ui/core';
 import axios from 'axios';
 
 import Snack from 'contexts/Snack';
 import { ButtonWithLoader, Modal, Select } from 'components';
-import { adminLayout } from 'constants/classes';
+import { useAlStyles } from 'constants/classes';
 import { handleChange } from 'functions';
 
-const useStyles = makeStyles({
-	...adminLayout
-});
-
 export default function Add({ open, setOpen, setLoadData }) {
-	const classes = useStyles();
+	const classes = useAlStyles();
 	const { setSnack } = useContext(Snack);
 	const [loading, setLoading] = useState(false);
 	const [section, setSection] = useState([]);

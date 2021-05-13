@@ -1,19 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
 import { PageLoader } from 'components';
-import { adminLayout } from 'constants/classes';
+import { useAlStyles } from 'constants/classes';
 import StaffList from './StaffList';
 import StudentList from './StudentList';
 
-const useStyles = makeStyles({
-	...adminLayout
-});
-
 export default function View({ viewDoc, loadData, setLoadData }) {
-	const classes = useStyles();
+	const classes = useAlStyles();
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState([]);
 

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import {
 	Table,
 	TableContainer,
@@ -13,14 +12,10 @@ import {
 } from '@material-ui/core';
 
 import { StyledTableCell, StyledTableRow, TablePaginationAction } from 'components';
-import { adminLayout } from 'constants/classes';
-
-const useStyles = makeStyles({
-	...adminLayout
-});
+import { useAlStyles } from 'constants/classes';
 
 export default function CustomPaginationActionsTable() {
-	const classes = useStyles();
+	const classes = useAlStyles();
 	const [page, setPage] = useState(0);
 	const rowsPerPage = 5;
 	const rows = [

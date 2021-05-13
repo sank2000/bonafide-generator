@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import {
 	Typography,
 	Fab,
@@ -16,16 +15,12 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 
 import { StyledTableCell, StyledTableRow, Dialog } from 'components';
-import { adminLayout } from 'constants/classes';
+import { useAlStyles } from 'constants/classes';
 import Add from './Add';
 import Edit from './Edit';
 
-const useStyles = makeStyles({
-	...adminLayout
-});
-
 export default function Admin() {
-	const classes = useStyles();
+	const classes = useAlStyles();
 	const [openAdd, setOpenAdd] = useState(false);
 	const [openUpdate, setOpenUpdate] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);

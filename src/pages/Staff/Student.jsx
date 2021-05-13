@@ -1,16 +1,11 @@
 import { Table, TableContainer, TableHead, TableRow, Paper, TableBody } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
 import { StyledTableCell, StyledTableRow } from 'components';
-import { adminLayout } from 'constants/classes';
-
-const useStyles = makeStyles({
-	...adminLayout
-});
+import { useAlStyles } from 'constants/classes';
 
 export default function Student() {
-	const classes = useStyles();
+	const classes = useAlStyles();
 	const data = [
 		{
 			registerNo: '810018104080',

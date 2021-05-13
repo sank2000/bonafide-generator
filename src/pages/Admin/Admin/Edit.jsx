@@ -1,15 +1,10 @@
-import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button, Box } from '@material-ui/core';
 
 import { Modal } from 'components';
-import { adminLayout } from 'constants/classes';
-
-const useStyles = makeStyles({
-	...adminLayout
-});
+import { useAlStyles } from 'constants/classes';
 
 export default function Edit({ open, setOpen }) {
-	const classes = useStyles();
+	const classes = useAlStyles();
 
 	return (
 		<Modal title={'Edit Admin'} open={open} setOpen={setOpen}>

@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { useState, useEffect } from 'react';
 import { Typography, Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import {
@@ -17,18 +16,13 @@ import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
 import axios from 'axios';
 
 import { StyledTableCell, StyledTableRow, Dialog, PageLoader } from 'components';
-import { adminLayout } from 'constants/classes';
+import { useAlStyles } from 'constants/classes';
 import Add from './Add';
 import Edit from './Edit';
 import View from './View';
-import { useEffect } from 'react';
-
-const useStyles = makeStyles({
-	...adminLayout
-});
 
 export default function Staff() {
-	const classes = useStyles();
+	const classes = useAlStyles();
 	const [openAdd, setOpenAdd] = useState(false);
 	const [openUpdate, setOpenUpdate] = useState(false);
 	const [loadData, setLoadData] = useState(false);

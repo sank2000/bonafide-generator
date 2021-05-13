@@ -1,3 +1,5 @@
+import { makeStyles } from '@material-ui/core/styles';
+
 const adminLayout = {
 	section: {
 		position: 'relative',
@@ -21,4 +23,8 @@ const adminLayout = {
 	}
 };
 
-export { adminLayout };
+const useAlStyles = makeStyles({
+	...adminLayout
+});
+
+export { adminLayout, useAlStyles };

@@ -11,20 +11,15 @@ import {
 	Button,
 	Box
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 
 import { StyledTableCell, StyledTableRow, NotFound, Dialog } from 'components';
-import { adminLayout } from 'constants/classes';
+import { useAlStyles } from 'constants/classes';
 import AddStudent from './AddStudent';
 
-const useStyles = makeStyles({
-	...adminLayout
-});
-
 export default function StudentList({ list, sectionID, setLoadData }) {
-	const classes = useStyles();
+	const classes = useAlStyles();
 	const [openAdd, setOpenAdd] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);
 	const [buttonLoading, setButtonLoading] = useState(false);

@@ -1,19 +1,14 @@
 import { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button, Box } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 
 import { Modal } from 'components';
-import { adminLayout } from 'constants/classes';
-
-const useStyles = makeStyles({
-	...adminLayout
-});
+import { useAlStyles } from 'constants/classes';
 
 export default function Add({ open, setOpen }) {
-	const classes = useStyles();
+	const classes = useAlStyles();
 	const [selectedDate, handleDateChange] = useState(new Date());
 
 	return (
