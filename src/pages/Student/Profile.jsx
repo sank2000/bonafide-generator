@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { rgba } from 'polished';
 import EditIcon from '@material-ui/icons/Edit';
+import axios from 'axios';
 import { Fab } from '@material-ui/core';
+import { format } from 'date-fns';
 
-import { RowWithTypography } from 'components';
+import { RowWithTypography, PageLoader } from 'components';
 import { adminLayout } from 'constants/classes';
 import Edit from './EditProfile';
 
@@ -20,31 +22,60 @@ const useStyles = makeStyles({
 export default function Profile() {
 	const [openUpdate, setOpenUpdate] = useState(false);
 	const classes = useStyles();
+	const [loading, setLoading] = useState(false);
+	const [data, setData] = useState({});
+
+	const getProfile = async () => {
+		setLoading(true);
+		try {
+			const { data: resData } = await axios.get('/student/profile');
+			setData(resData.data);
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
+			error.handleGlobally && error.handleGlobally();
+		}
+	};
+
+	useEffect(() => {
+		getProfile();
+	}, []);
 
 	return (
 		<section className={classes.section}>
-			<Container>
-				<div className='imgContainer'>
-					<img src='/images/student.png' alt='pro'></img>
-				</div>
-				<div style={{ overflowX: 'auto' }}>
-					<table width='100%'>
-						<tbody>
-							<RowWithTypography title={'Name'} value={'Student 1'} />
-							<RowWithTypography title={'Register NO'} value={'810018104080'} />
-							<RowWithTypography title={'DOB'} value={'08 - 11 - 2000'} />
-							<RowWithTypography title={'Department'} value={'CSE'} />
-							<RowWithTypography title={'Degree'} value={'BE'} />
-							<RowWithTypography title={'Batch'} value={'2018 - 2023'} />
-							<RowWithTypography title={'Campus'} value={'BIT'} />
-							<RowWithTypography title={'Section ID'} value={'12'} />
-							<RowWithTypography title={'Phone'} value={'1234567890'} />
-							<RowWithTypography title={'Email'} value={'student@gmail.com'} />
-						</tbody>
-					</table>
-				</div>
-			</Container>
-			<Edit open={openUpdate} setOpen={setOpenUpdate} />
+			{loading ? (
+				<PageLoader />
+			) : (
+				<Container>
+					<div className='imgContainer'>
+						<img src={data.profileImg} alt='pro'></img>
+					</div>
+					<div style={{ overflowX: 'auto' }}>
+						<table width='100%'>
+							<tbody>
+								<RowWithTypography title={'Name'} value={data.name} />
+								<RowWithTypography title={'Register NO'} value={data.registerNumber} />
+								{data.dateOfBirth && (
+									<RowWithTypography
+										title={'DOB'}
+										value={format(new Date(data.dateOfBirth), 'dd - MMM - yyyy')}
+									/>
+								)}
+								<RowWithTypography title={'Department'} value={data.department} />
+								<RowWithTypography title={'Degree'} value={data.degree} />
+								<RowWithTypography title={'Batch'} value={data.batch} />
+								<RowWithTypography title={'Campus'} value={data.campus} />
+								{data.section?.name && (
+									<RowWithTypography title={'Section'} value={data.section?.name} />
+								)}
+								<RowWithTypography title={'Phone'} value={data.phoneNumber} />
+								<RowWithTypography title={'Email'} value={data.email} />
+							</tbody>
+						</table>
+					</div>
+				</Container>
+			)}
+			<Edit open={openUpdate} setOpen={setOpenUpdate} data={data} setData={setData} />
 			<Fab color='secondary' className={classes.float} onClick={() => setOpenUpdate(true)}>
 				<EditIcon />
 			</Fab>
