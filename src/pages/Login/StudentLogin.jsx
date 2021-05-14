@@ -1,12 +1,12 @@
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { Typography, TextField, Button } from '@material-ui/core';
+import { Typography, TextField } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { useHistory } from 'react-router';
+import axios from 'axios';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 
-import { BgContainer, FlexContainer } from 'components';
+import { BgContainer, FlexContainer, ButtonWithLoader } from 'components';
 import Auth from 'contexts/Auth';
 import { login } from './function';
 
@@ -14,19 +14,28 @@ export default function StudentLogin() {
 	const [selectedDate, handleDateChange] = useState(new Date());
 	const [registerNo, setRegisterNo] = useState('');
 	const { setAuth } = useContext(Auth);
-	const history = useHistory();
+	const [loading, setLoading] = useState(false);
 
-	const handleSubmit = e => {
+	const handleSubmit = async e => {
 		e.preventDefault();
-		if (selectedDate.toDateString() === 'Invalid Date') return;
-		login(setAuth, {
-			isAuth: true,
-			role: 'student',
-			name: 'student',
-			token: '12asfffe23'
-		});
-		console.log({ registerNo, dob: selectedDate.toISOString() });
-		history.push('/');
+		if (selectedDate.toDateString() === 'Invalid Date' || loading) return;
+		setLoading(true);
+		try {
+			const { data: resData } = await axios.post('/student/login', {
+				registerNumber: registerNo,
+				dateOfBirth: selectedDate
+			});
+			setLoading(false);
+			login(setAuth, {
+				isAuth: true,
+				role: 'student',
+				name: resData.name,
+				token: resData.token
+			});
+		} catch (error) {
+			setLoading(false);
+			error.handleGlobally && error.handleGlobally();
+		}
 	};
 
 	return (
@@ -52,9 +61,7 @@ export default function StudentLogin() {
 							value={selectedDate}
 							onChange={handleDateChange}
 						/>
-						<Button variant='contained' color='primary' type='submit'>
-							LOGIN
-						</Button>
+						<ButtonWithLoader loading={loading} text='LOGIN' />
 					</form>
 				</MuiPickersUtilsProvider>
 			</Box>
