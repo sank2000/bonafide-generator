@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, TableContainer, TableHead, TableRow, Paper, TableBody } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
+import { format } from 'date-fns';
 
-import { StyledTableCell, StyledTableRow, PageLoader } from 'components';
+import { StyledTableCell, StyledTableRow, PageLoader, RowWithTypography } from 'components';
 import { useAlStyles } from 'constants/classes';
 
 export default function Student() {
@@ -16,7 +17,6 @@ export default function Student() {
 		try {
 			const { data: resData } = await axios.get('/staff/section/student');
 			setData(resData.data);
-			console.log(resData.data);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
@@ -31,8 +31,20 @@ export default function Student() {
 	return (
 		<section className={classes.section}>
 			<Typography variant='h4' align='center' className={classes.title}>
-				{data[0].section.name}
+				{data[0]?.section?.name}
 			</Typography>
+			<div className={classes.table}>
+				<table width='100%' style={{ overflowX: 'auto', margin: '20px 0' }}>
+					<tbody>
+						{data[0]?.department && (
+							<RowWithTypography title={'Department'} value={data[0]?.department} />
+						)}
+						{data[0]?.degree && <RowWithTypography title={'Degree'} value={data[0]?.degree} />}
+						{data[0]?.campus && <RowWithTypography title={'Campus'} value={data[0]?.campus} />}
+						{data[0]?.batch && <RowWithTypography title={'Batch'} value={data[0]?.batch} />}
+					</tbody>
+				</table>
+			</div>
 			{loading ? (
 				<PageLoader />
 			) : (
@@ -42,9 +54,9 @@ export default function Student() {
 							<TableRow>
 								<StyledTableCell>Register No</StyledTableCell>
 								<StyledTableCell>Name</StyledTableCell>
-								<StyledTableCell>Degree</StyledTableCell>
-								<StyledTableCell>Department</StyledTableCell>
-								<StyledTableCell>Campus</StyledTableCell>
+								<StyledTableCell>DOB</StyledTableCell>
+								<StyledTableCell>Email</StyledTableCell>
+								<StyledTableCell>Phone</StyledTableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
@@ -55,9 +67,13 @@ export default function Student() {
 											{val.registerNumber}
 										</StyledTableCell>
 										<StyledTableCell>{val.name}</StyledTableCell>
-										<StyledTableCell>{val.degree}</StyledTableCell>
-										<StyledTableCell>{val.department}</StyledTableCell>
-										<StyledTableCell>{val.campus}</StyledTableCell>
+										{val.dateOfBirth && (
+											<StyledTableCell style={{ whiteSpace: 'nowrap' }}>
+												{format(new Date(val.dateOfBirth), 'dd - MMM - yyyy')}
+											</StyledTableCell>
+										)}
+										<StyledTableCell>{val.email}</StyledTableCell>
+										<StyledTableCell>{val.phoneNumber}</StyledTableCell>
 									</StyledTableRow>
 								);
 							})}
