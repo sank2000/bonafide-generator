@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Fab } from '@material-ui/core';
 import styled from 'styled-components';
 import { rgba } from 'polished';
 import EditIcon from '@material-ui/icons/Edit';
+import axios from 'axios';
 
-import { RowWithTypography } from 'components';
+import { RowWithTypography, PageLoader } from 'components';
 import { adminLayout } from 'constants/classes';
 import Edit from './EditProfile';
 
@@ -20,28 +21,52 @@ const useStyles = makeStyles({
 export default function Profile() {
 	const [openUpdate, setOpenUpdate] = useState(false);
 	const classes = useStyles();
+	const [loading, setLoading] = useState(false);
+	const [data, setData] = useState({});
+
+	const getProfile = async () => {
+		setLoading(true);
+		try {
+			const { data: resData } = await axios.get('/staff/profile');
+			setData(resData.data);
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
+			error.handleGlobally && error.handleGlobally();
+		}
+	};
+
+	useEffect(() => {
+		getProfile();
+	}, []);
 
 	return (
 		<section className={classes.section}>
-			<Container>
-				<div className='imgContainer'>
-					<img src='/images/staff.png' alt='pro'></img>
-				</div>
-				<div style={{ overflowX: 'auto' }}>
-					<table width='100%'>
-						<tbody>
-							<RowWithTypography title={'Name'} value={'Staff 1'} />
-							<RowWithTypography title={'ID'} value={'123456'} />
-							<RowWithTypography title={'Designation'} value={'Assistant Professor'} />
-							<RowWithTypography title={'Department'} value={'CSE'} />
-							<RowWithTypography title={'Campus'} value={'BIT'} />
-							<RowWithTypography title={'Phone'} value={'1234567890'} />
-							<RowWithTypography title={'Email'} value={'staff@gmail.com'} />
-						</tbody>
-					</table>
-				</div>
-			</Container>
-			<Edit open={openUpdate} setOpen={setOpenUpdate} />
+			{loading ? (
+				<PageLoader />
+			) : (
+				<Container>
+					<div className='imgContainer'>
+						<img src={data.profileImg} alt='pro'></img>
+					</div>
+					<div style={{ overflowX: 'auto' }}>
+						<table width='100%'>
+							<tbody>
+								<RowWithTypography title={'Name'} value={data.name} />
+								<RowWithTypography title={'Department'} value={data.department} />
+								<RowWithTypography title={'Degree'} value={data.designation} />
+								<RowWithTypography title={'Campus'} value={data.campus} />
+								{data.section?.name && (
+									<RowWithTypography title={'Section'} value={data.section?.name} />
+								)}
+								<RowWithTypography title={'Phone'} value={data.phoneNumber} />
+								<RowWithTypography title={'Email'} value={data.email} />
+							</tbody>
+						</table>
+					</div>
+				</Container>
+			)}
+			<Edit open={openUpdate} setOpen={setOpenUpdate} data={data} setData={setData} />
 			<Fab color='secondary' className={classes.float} onClick={() => setOpenUpdate(true)}>
 				<EditIcon />
 			</Fab>
@@ -66,7 +91,7 @@ const Container = styled.div`
 		background-color: #fff;
 		border: ${p => `3px solid ${rgba(p.theme.primary, 0.5)}`};
 		position: absolute;
-		top: -20%;
+		top: -15%;
 		left: 50%;
 		transform: translateX(-50%);
 	}
