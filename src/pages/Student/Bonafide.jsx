@@ -1,14 +1,106 @@
-import { useState } from 'react';
-import { Typography, Button, Tooltip } from '@material-ui/core';
+import { useState, useEffect, useContext } from 'react';
+import { Typography, Button } from '@material-ui/core';
 import styled from 'styled-components';
-import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
-import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
-import DoneOutlineOutlinedIcon from '@material-ui/icons/DoneOutlineOutlined';
-import { rgba } from 'polished';
 import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
+import axios from 'axios';
+import { format } from 'date-fns';
 
-import { FlexContainer } from 'components';
+import Snack from 'contexts/Snack';
+import { FlexContainer, PageLoader } from 'components';
 import PdfDocument from './PdfDocument';
+import Stats from './Stats';
+
+export default function Bonafide() {
+	const [step, setStep] = useState(1);
+	const [loading, setLoading] = useState(false);
+	const [loadingApply, setLoadingApply] = useState(false);
+	const { setSnack } = useContext(Snack);
+	const [bonafide, setBonafideData] = useState(null);
+	const [data, setData] = useState({});
+
+	const getDetails = async () => {
+		setLoading(true);
+		try {
+			const { data: resData } = await axios.get('/student/bonafide/status');
+			setBonafideData(resData.data);
+			if (resData.data) {
+				if (resData.data.status === 'approved') {
+					setData(resData.data.studentID);
+					setStep(3);
+				}
+			}
+			setLoading(false);
+		} catch (error) {
+			error.handleGlobally && error.handleGlobally();
+		}
+	};
+
+	const applyBonafide = async () => {
+		if (loadingApply) return;
+		setLoadingApply(true);
+		try {
+			const { data: resData } = await axios.get('/student/bonafide/apply');
+			setBonafideData(resData.data);
+			setLoadingApply(false);
+			setSnack({
+				open: true,
+				message: 'Bonafide applied successfully!',
+				type: 'success'
+			});
+		} catch (error) {
+			error.handleGlobally && error.handleGlobally();
+		}
+	};
+
+	useEffect(() => {
+		getDetails();
+	}, []);
+
+	return (
+		<section>
+			{!loading && (
+				<>
+					{!bonafide ? (
+						<ApplyContainer>
+							<Typography variant='h4'>You are not applied for bonafide recently.</Typography>
+							<Button variant='contained' color='primary' size='large' onClick={applyBonafide}>
+								Apply Now
+							</Button>
+						</ApplyContainer>
+					) : (
+						<Container>
+							<Stats step={step} />
+							{step === 1 && bonafide?.createdAt && (
+								<Typography variant='h6'>
+									Applied on {format(new Date(bonafide.createdAt), 'Do MMM,yyyy')}
+								</Typography>
+							)}
+							{step === 3 && (
+								<PDFDownloadLink
+									document={<PdfDocument data={data} />}
+									fileName='bonafide.pdf'
+									style={buttonStyle}
+								>
+									{({ blob, url, loading, error }) => {
+										return loading ? 'Loading document...' : 'Download Pdf';
+									}}
+								</PDFDownloadLink>
+							)}
+							{step === 3 && (
+								<PdfContainer>
+									<PDFViewer style={{ width: '100%', height: '600px' }}>
+										<PdfDocument data={data} />
+									</PDFViewer>
+								</PdfContainer>
+							)}
+						</Container>
+					)}
+				</>
+			)}
+			{(loading || loadingApply) && <PageLoader />}
+		</section>
+	);
+}
 
 const buttonStyle = {
 	fontFamily: 'Poppins',
@@ -19,75 +111,10 @@ const buttonStyle = {
 	textDecoration: 'none',
 	padding: '8px 22px',
 	borderRadius: '4px',
+	margin: '30px 0',
 	boxShadow:
 		'0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)'
 };
-
-export default function Bonafide() {
-	const [step] = useState(3);
-	const [pdfLoading, setPdfLoading] = useState(true);
-	const data = {
-		profileImg:
-			'https://image.shutterstock.com/image-vector/business-man-icon-trendy-flat-260nw-1041223936.jpg',
-		name: 'Santhosh K',
-		registerNo: '810018104080',
-		degree: 'BE',
-		department: 'CSE',
-		batch: '2019 - 2022',
-		createdDate: new Date().toISOString()
-	};
-
-	return (
-		<section>
-			<ApplyContainer>
-				<Typography variant='h4'>You are not applied for bonafide recently.</Typography>
-				<Button variant='contained' color='primary' size='large'>
-					Apply Now
-				</Button>
-			</ApplyContainer>
-			<StatsContainer>
-				<Typography variant='h4'>Application Status</Typography>
-				<Stats>
-					<Line />
-					<Line2 step={step} />
-					<Tooltip title='Applied' placement='bottom' arrow>
-						<Stat active={step >= 1}>
-							<TouchAppOutlinedIcon style={{ fontSize: 40 }} />
-						</Stat>
-					</Tooltip>
-					<Tooltip title='Verified' placement='bottom' arrow>
-						<Stat active={step >= 2}>
-							<ThumbUpAltOutlinedIcon style={{ fontSize: 40 }} />
-						</Stat>
-					</Tooltip>
-					<Tooltip title='Downloadable' placement='bottom' arrow>
-						<Stat active={step >= 3}>
-							<DoneOutlineOutlinedIcon style={{ fontSize: 40 }} />
-						</Stat>
-					</Tooltip>
-				</Stats>
-				<PDFDownloadLink
-					document={<PdfDocument data={data} />}
-					fileName='bonafide.pdf'
-					style={buttonStyle}
-				>
-					{({ blob, url, loading, error }) => {
-						if (!loading) setPdfLoading(false);
-						if (error) setPdfLoading(true);
-						return loading ? 'Loading document...' : 'Download Pdf';
-					}}
-				</PDFDownloadLink>
-			</StatsContainer>
-			{!pdfLoading && (
-				<PdfContainer>
-					<PDFViewer style={{ width: '100%', height: '600px' }}>
-						<PdfDocument data={data} />
-					</PDFViewer>
-				</PdfContainer>
-			)}
-		</section>
-	);
-}
 
 const ApplyContainer = styled(FlexContainer)`
 	flex-direction: column;
@@ -98,37 +125,8 @@ const ApplyContainer = styled(FlexContainer)`
 		margin-top: 20px;
 	}
 `;
-
-const StatsContainer = styled.div`
-	margin: 100px auto 20px;
-	width: 90%;
-	max-width: 1200px;
-	text-align: center;
-`;
-const Stats = styled(FlexContainer)`
-	justify-content: space-between;
-	margin: 40px 0;
-	position: relative;
-`;
-const Stat = styled.div`
-	background-color: #fff;
-	padding: 10px;
-	border-radius: 50%;
-	cursor: pointer;
-	border: ${p =>
-		p.active ? `3px solid ${p.theme.primary}` : `3px solid ${rgba(p.theme.primary, 0.2)}`};
-`;
-
-const Line = styled.div`
-	width: 100%;
-	height: 5px;
-	background-color: ${p => rgba(p.theme.primary, 0.2)};
-	position: absolute;
-	z-index: -1;
-`;
-const Line2 = styled(Line)`
-	width: ${p => (p.step === 3 ? '100%' : p.step === 2 ? '50%' : '0%')};
-	background-color: ${p => p.theme.primary};
+const Container = styled(FlexContainer)`
+	flex-direction: column;
 `;
 
 const PdfContainer = styled.div`
