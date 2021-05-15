@@ -36,7 +36,7 @@ export default function CustomPaginationActionsTable({ loadData }) {
 	const getHistory = async () => {
 		setLoading(true);
 		try {
-			const { data: resData } = await axios.get('/staff/bonafied/history');
+			const { data: resData } = await axios.get('/staff/bonafide/history');
 			setData(resData.data);
 			setLoading(false);
 		} catch (error) {

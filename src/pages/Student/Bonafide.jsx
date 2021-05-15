@@ -72,7 +72,7 @@ export default function Bonafide() {
 							<Stats step={step} />
 							{step === 1 && bonafide?.createdAt && (
 								<Typography variant='h6'>
-									Applied on {format(new Date(bonafide.createdAt), 'Do MMM,yyyy')}
+									Applied on {format(new Date(bonafide.createdAt), 'do MMM,yyyy')}
 								</Typography>
 							)}
 							{step === 3 && (

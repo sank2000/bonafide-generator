@@ -114,7 +114,7 @@ export default function Admin() {
 				handleClose={() => {
 					if (!buttonLoading) setOpenDelete(false);
 				}}
-				handleConform={handleDelete}
+				handleConfirm={handleDelete}
 			/>
 			<Fab color='secondary' className={classes.float} onClick={() => setOpenAdd(true)}>
 				<AddIcon />

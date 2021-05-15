@@ -133,14 +133,14 @@ export default function Staff() {
 			/>
 			<View open={openView} setOpen={setOpenView} setLoadData={setLoadData} data={activeDoc} />
 			<Dialog
-				title='Conform'
+				title='Confirm'
 				description='Are you sure to delete this?'
 				open={openDelete}
 				loading={buttonLoading}
 				handleClose={() => {
 					if (!buttonLoading) setOpenDelete(false);
 				}}
-				handleConform={handleDelete}
+				handleConfirm={handleDelete}
 			/>
 			<Fab color='secondary' className={classes.float} onClick={() => setOpenAdd(true)}>
 				<AddIcon />

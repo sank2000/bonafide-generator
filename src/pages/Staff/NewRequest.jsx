@@ -36,7 +36,7 @@ export default function NewRequest({ loadData, setLoadData }) {
 	const getApplied = async () => {
 		setLoading(true);
 		try {
-			const { data: resData } = await axios.get('/staff/bonafied/applied');
+			const { data: resData } = await axios.get('/staff/bonafide/applied');
 			setData(resData.data);
 			setLoading(false);
 		} catch (error) {
@@ -54,7 +54,7 @@ export default function NewRequest({ loadData, setLoadData }) {
 		const { id, status } = actionData;
 		setOpenAdditionLoader(true);
 		try {
-			await axios.put('staff/bonafied/status', {
+			await axios.put('staff/bonafide/status', {
 				bonafideID: id,
 				status
 			});
@@ -63,7 +63,7 @@ export default function NewRequest({ loadData, setLoadData }) {
 			setOpenAction(false);
 			setSnack({
 				open: true,
-				message: `Bonafied ${status} successfully!`,
+				message: `Bonafide ${status} successfully!`,
 				type: 'success'
 			});
 		} catch (error) {
@@ -147,7 +147,7 @@ export default function NewRequest({ loadData, setLoadData }) {
 				handleClose={() => {
 					if (!openAdditionLoader) setOpenAction(false);
 				}}
-				handleConform={handleUpdate}
+				handleConfirm={handleUpdate}
 			/>
 		</div>
 	);

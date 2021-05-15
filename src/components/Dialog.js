@@ -15,7 +15,7 @@ export default function CustomDialog({
 	loading,
 	open,
 	handleClose,
-	handleConform
+	handleConfirm
 }) {
 	return (
 		<Dialog open={open} onClose={handleClose} disableBackdropClick>
@@ -27,7 +27,7 @@ export default function CustomDialog({
 				<Button onClick={handleClose} color='primary'>
 					No
 				</Button>
-				<Button onClick={handleConform} color='primary' autoFocus>
+				<Button onClick={handleConfirm} color='primary' autoFocus>
 					Yes {loading && <ButtonLoader />}
 				</Button>
 			</DialogActions>

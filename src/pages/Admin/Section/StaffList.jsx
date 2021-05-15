@@ -94,14 +94,14 @@ export default function StaffList({ list, sectionID, setLoadData }) {
 				{list?.length === 0 && <NotFound />}
 			</TableContainer>
 			<Dialog
-				title='Conform'
+				title='Confirm'
 				description='Are you sure to remove this staff from section?'
 				open={openDelete}
 				loading={buttonLoading}
 				handleClose={() => {
 					if (!buttonLoading) setOpenDelete(false);
 				}}
-				handleConform={handleDelete}
+				handleConfirm={handleDelete}
 			/>
 			<AddStaff
 				open={openAdd}

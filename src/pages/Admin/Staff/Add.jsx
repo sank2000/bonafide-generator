@@ -159,7 +159,7 @@ export default function Add({ open, setOpen, setLoadData }) {
 					onChange={handleChange(setData)}
 				/>
 				<TextField
-					label='Conform Password'
+					label='Confirm Password'
 					required
 					type='password'
 					name='c_password'
