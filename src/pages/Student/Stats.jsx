@@ -16,17 +16,21 @@ export default function StatsComponent({ step }) {
 				<Line2 step={step} />
 				<Tooltip title='Applied' placement='bottom' arrow>
 					<Stat active={step >= 1}>
-						<TouchAppOutlinedIcon style={{ fontSize: 40 }} />
+						<TouchAppOutlinedIcon style={{ fontSize: 40, color: step >= 1 ? 'white' : 'black' }} />
 					</Stat>
 				</Tooltip>
 				<Tooltip title='Verified' placement='bottom' arrow>
 					<Stat active={step >= 2}>
-						<ThumbUpAltOutlinedIcon style={{ fontSize: 40 }} />
+						<ThumbUpAltOutlinedIcon
+							style={{ fontSize: 40, color: step >= 2 ? 'white' : 'black' }}
+						/>
 					</Stat>
 				</Tooltip>
 				<Tooltip title='Downloadable' placement='bottom' arrow>
 					<Stat active={step >= 3}>
-						<DoneOutlineOutlinedIcon style={{ fontSize: 40 }} />
+						<DoneOutlineOutlinedIcon
+							style={{ fontSize: 40, color: step >= 3 ? 'white' : 'black' }}
+						/>
 					</Stat>
 				</Tooltip>
 			</Stats>
@@ -46,7 +50,7 @@ const Stats = styled(FlexContainer)`
 	position: relative;
 `;
 const Stat = styled.div`
-	background-color: #fff;
+	background-color: ${p => (p.active ? p.theme.primary : '#fff')};
 	padding: 10px;
 	border-radius: 50%;
 	cursor: pointer;
