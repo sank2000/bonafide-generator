@@ -75,7 +75,6 @@ const Box = styled(FlexContainer)`
 	padding: 2em;
 	border-radius: 1em;
 	background-color: ${p => p.theme.white};
-	cursor: pointer;
 	box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.2);
 
 	@media only screen and (max-width: 600px) {
