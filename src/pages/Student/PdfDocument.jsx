@@ -122,18 +122,21 @@ const MyDocument = ({ data }) => {
 					</View>
 					<View>
 						<Text style={{ ...styles.contentText, textIndent: '50px' }}>
-							This is to certify that Mr. <span style={styles.bold}>{data.name}</span> (Reg NO :
-							{data.registerNumber}) is a bonafide student of the University College of Engineering
-							(Bharathidasan Institute of Technology (BIT) Campus, Anna university) Tiruchirappalli
-							and he is doing <span style={styles.bold}>{data.degree}</span> programme in the branch
-							of <span style={styles.bold}>{data.department} </span>
+							This is to certify that {data.gender === 'male' ? 'Mr' : 'Mrs'}.{' '}
+							<span style={styles.bold}>{data.name}</span> (Reg NO :{data.registerNumber}) is a
+							bonafide student of the University College of Engineering (Bharathidasan Institute of
+							Technology (BIT) Campus, Anna university) Tiruchirappalli and{' '}
+							{data.gender === 'male' ? 'he' : 'she'} is doing{' '}
+							<span style={styles.bold}>{data.degree}</span> programme in the branch of{' '}
+							<span style={styles.bold}>{data.department} </span>
 							during the academic year <span style={styles.bold}>{data.batch}</span> in REGULAR mode
 							and medium of instruction is
 							<span style={styles.bold}> ENGLISH</span>.
 						</Text>
 						<View style={{ margin: '40 0' }}>
 							<Text style={{ ...styles.contentTex }}>
-								He has availed Government scholarship through this institution from the year{' '}
+								{data.gender === 'male' ? 'He' : 'She'} has availed Government scholarship through
+								this institution from the year{' '}
 								<span style={styles.bold}>
 									{format(sub(new Date(), { years: 1 }), 'yyyy')} - {format(new Date(), 'yyyy')}.
 								</span>

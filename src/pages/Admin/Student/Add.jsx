@@ -17,6 +17,7 @@ const initialValue = {
 	profileImg: '',
 	degree: '',
 	department: '',
+	gender: '',
 	campus: '',
 	phoneNumber: '',
 	email: '',
@@ -129,6 +130,13 @@ export default function Add({ open, setOpen, setLoadData }) {
 					<MenuItem value={'ECE'}>ECE</MenuItem>
 					<MenuItem value={'EEE'}>EEE</MenuItem>
 				</Select>
+				<Select name='gender' label='Gender' value={data.gender} onChange={handleChange(setData)}>
+					<MenuItem value=''>
+						<em>None</em>
+					</MenuItem>
+					<MenuItem value={'male'}>MALE</MenuItem>
+					<MenuItem value={'female'}>FEMALE</MenuItem>
+				</Select>
 				<MuiPickersUtilsProvider utils={DateFnsUtils}>
 					<KeyboardDatePicker
 						views={['year']}
@@ -162,7 +170,7 @@ export default function Add({ open, setOpen, setLoadData }) {
 					onChange={handleChange(setData)}
 				/>
 				<Select
-					label='Section ID'
+					label='Section'
 					name='section'
 					value={data.section}
 					onChange={handleChange(setData)}

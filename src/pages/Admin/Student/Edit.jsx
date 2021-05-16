@@ -114,6 +114,13 @@ export default function Edit({ open, setOpen, setLoadData, activeData }) {
 					<MenuItem value={'ECE'}>ECE</MenuItem>
 					<MenuItem value={'EEE'}>EEE</MenuItem>
 				</Select>
+				<Select name='gender' label='Gender' value={data.gender} onChange={handleChange(setData)}>
+					<MenuItem value=''>
+						<em>None</em>
+					</MenuItem>
+					<MenuItem value={'male'}>MALE</MenuItem>
+					<MenuItem value={'female'}>FEMALE</MenuItem>
+				</Select>
 				<MuiPickersUtilsProvider utils={DateFnsUtils}>
 					<KeyboardDatePicker
 						views={['year']}

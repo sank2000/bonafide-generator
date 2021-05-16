@@ -62,6 +62,7 @@ export default function Profile() {
 									/>
 								)}
 								<RowWithTypography title={'Department'} value={data.department} />
+								<RowWithTypography title={'Gender'} value={data.gender} />
 								<RowWithTypography title={'Degree'} value={data.degree} />
 								<RowWithTypography title={'Batch'} value={data.batch} />
 								<RowWithTypography title={'Campus'} value={data.campus} />
