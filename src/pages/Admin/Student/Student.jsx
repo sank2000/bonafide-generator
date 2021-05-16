@@ -75,52 +75,54 @@ export default function Student() {
 			<Typography variant='h4' align='center' className={classes.title}>
 				List
 			</Typography>
-			<TableContainer component={Paper} className={classes.table}>
-				<Table>
-					<TableHead>
-						<TableRow>
-							<StyledTableCell>Register No</StyledTableCell>
-							<StyledTableCell>Name</StyledTableCell>
-							<StyledTableCell>Degree</StyledTableCell>
-							<StyledTableCell>Department</StyledTableCell>
-							<StyledTableCell>Campus</StyledTableCell>
-							<StyledTableCell>View</StyledTableCell>
-							<StyledTableCell>Edit</StyledTableCell>
-							<StyledTableCell>Delete</StyledTableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{data.map((val, ind) => {
-							return (
-								<StyledTableRow key={ind}>
-									<StyledTableCell component='th' scope='row'>
-										{val.registerNumber}
-									</StyledTableCell>
-									<StyledTableCell>{val.degree}</StyledTableCell>
-									<StyledTableCell>{val.name}</StyledTableCell>
-									<StyledTableCell>{val.department}</StyledTableCell>
-									<StyledTableCell>{val.campus}</StyledTableCell>
-									<StyledTableCell>
-										<IconButton onClick={() => handleSetActive(setOpenView, val)}>
-											<VisibilityOutlinedIcon />
-										</IconButton>
-									</StyledTableCell>
-									<StyledTableCell>
-										<IconButton onClick={() => handleSetActive(setOpenUpdate, val)}>
-											<EditOutlinedIcon />
-										</IconButton>
-									</StyledTableCell>
-									<StyledTableCell>
-										<IconButton onClick={() => handleSetActive(setOpenDelete, val)}>
-											<DeleteForeverOutlinedIcon />
-										</IconButton>
-									</StyledTableCell>
-								</StyledTableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
-			</TableContainer>
+			{!loading && (
+				<TableContainer component={Paper} className={classes.table}>
+					<Table>
+						<TableHead>
+							<TableRow>
+								<StyledTableCell>Register No</StyledTableCell>
+								<StyledTableCell>Name</StyledTableCell>
+								<StyledTableCell>Degree</StyledTableCell>
+								<StyledTableCell>Department</StyledTableCell>
+								<StyledTableCell>Campus</StyledTableCell>
+								<StyledTableCell>View</StyledTableCell>
+								<StyledTableCell>Edit</StyledTableCell>
+								<StyledTableCell>Delete</StyledTableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{data.map((val, ind) => {
+								return (
+									<StyledTableRow key={ind}>
+										<StyledTableCell component='th' scope='row'>
+											{val.registerNumber}
+										</StyledTableCell>
+										<StyledTableCell>{val.degree}</StyledTableCell>
+										<StyledTableCell>{val.name}</StyledTableCell>
+										<StyledTableCell>{val.department}</StyledTableCell>
+										<StyledTableCell>{val.campus}</StyledTableCell>
+										<StyledTableCell>
+											<IconButton onClick={() => handleSetActive(setOpenView, val)}>
+												<VisibilityOutlinedIcon />
+											</IconButton>
+										</StyledTableCell>
+										<StyledTableCell>
+											<IconButton onClick={() => handleSetActive(setOpenUpdate, val)}>
+												<EditOutlinedIcon />
+											</IconButton>
+										</StyledTableCell>
+										<StyledTableCell>
+											<IconButton onClick={() => handleSetActive(setOpenDelete, val)}>
+												<DeleteForeverOutlinedIcon />
+											</IconButton>
+										</StyledTableCell>
+									</StyledTableRow>
+								);
+							})}
+						</TableBody>
+					</Table>
+				</TableContainer>
+			)}
 			{loading && <PageLoader />}
 			<Add open={openAdd} setOpen={setOpenAdd} setLoadData={setLoadData} />
 			<Edit
