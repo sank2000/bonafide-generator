@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import { FlexContainer } from 'components';
 
-export default function StatsComponent({ step }) {
+export default function StatsComponent({ step, rejected }) {
 	return (
 		<StatsContainer>
 			<Typography variant='h4'>Application Status</Typography>
@@ -20,16 +20,16 @@ export default function StatsComponent({ step }) {
 					</Stat>
 				</Tooltip>
 				<Tooltip title='Verified' placement='bottom' arrow>
-					<Stat active={step >= 2}>
+					<Stat active={step >= 2} rejected={rejected}>
 						<ThumbUpAltOutlinedIcon
-							style={{ fontSize: 40, color: step >= 2 ? 'white' : 'black' }}
+							style={{ fontSize: 40, color: step >= 2 ? 'white' : rejected ? 'grey' : 'black' }}
 						/>
 					</Stat>
 				</Tooltip>
 				<Tooltip title='Downloadable' placement='bottom' arrow>
-					<Stat active={step >= 3}>
+					<Stat active={step >= 3} rejected={rejected}>
 						<DoneOutlineOutlinedIcon
-							style={{ fontSize: 40, color: step >= 3 ? 'white' : 'black' }}
+							style={{ fontSize: 40, color: step >= 3 ? 'white' : rejected ? 'grey' : 'black' }}
 						/>
 					</Stat>
 				</Tooltip>
@@ -54,8 +54,29 @@ const Stat = styled.div`
 	padding: 10px;
 	border-radius: 50%;
 	cursor: pointer;
+	position: relative;
 	border: ${p =>
 		p.active ? `3px solid ${p.theme.primary}` : `3px solid ${rgba(p.theme.primary, 0.2)}`};
+
+	&::before,
+	&::after {
+		content: '';
+		display: ${p => (p.rejected ? 'inline-block' : 'none')};
+		width: 100%;
+		height: 5px;
+		background-color: ${p => p.theme.primary};
+		position: absolute;
+		top: 50%;
+		left: 50%;
+	}
+
+	&::before {
+		transform: translate(-50%, -50%) rotate(45deg);
+	}
+
+	&::after {
+		transform: translate(-50%, -50%) rotate(135deg);
+	}
 `;
 
 const Line = styled.div`

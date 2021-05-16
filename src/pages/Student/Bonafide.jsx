@@ -9,10 +9,12 @@ import Snack from 'contexts/Snack';
 import { FlexContainer, PageLoader } from 'components';
 import PdfDocument from './PdfDocument';
 import Stats from './Stats';
+import ReRequest from './ReRequest';
 
 export default function Bonafide() {
 	const [step, setStep] = useState(1);
 	const [loading, setLoading] = useState(false);
+	const [rejected, setRejected] = useState(false);
 	const [loadingApply, setLoadingApply] = useState(false);
 	const { setSnack } = useContext(Snack);
 	const [bonafide, setBonafideData] = useState(null);
@@ -27,6 +29,8 @@ export default function Bonafide() {
 				if (resData.data.status === 'approved') {
 					setData(resData.data.studentID);
 					setStep(3);
+				} else if (resData.data.status === 'rejected') {
+					setRejected(true);
 				}
 			}
 			setLoading(false);
@@ -69,11 +73,18 @@ export default function Bonafide() {
 						</ApplyContainer>
 					) : (
 						<Container>
-							<Stats step={step} />
+							<Stats step={step} rejected={rejected} />
 							{step === 1 && bonafide?.createdAt && (
 								<Typography variant='h6'>
 									Applied on {format(new Date(bonafide.createdAt), 'do MMM,yyyy')}
 								</Typography>
+							)}
+							{rejected && (
+								<ReRequest
+									bonafide={bonafide}
+									setBonafideData={setBonafideData}
+									setRejected={setRejected}
+								/>
 							)}
 							{step === 3 && (
 								<PDFDownloadLink
