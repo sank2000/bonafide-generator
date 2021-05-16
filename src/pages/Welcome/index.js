@@ -25,7 +25,7 @@ export default function Welcome() {
 
 	return (
 		<BgContainer>
-			<Typography variant='h3' color='primary' style={{ fontWeight: '600' }}>
+			<Typography variant='h3' color='primary' style={{ fontWeight: '600', textAlign: 'center' }}>
 				Welcome to Bonafide Generator
 			</Typography>
 			<BoxContainer>
