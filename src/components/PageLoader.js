@@ -1,10 +1,12 @@
 import CircularProgress from '@material-ui/core/CircularProgress';
 import styled from 'styled-components';
 
+import logo from 'assets/au_logo';
+
 export default function PageLoader() {
 	return (
 		<Container>
-			<img src='/images/au_logo.png' alt='logo'></img>
+			<img src={logo} alt='logo'></img>
 			<CircularProgress size={120} color='primary' />
 		</Container>
 	);
@@ -12,7 +14,11 @@ export default function PageLoader() {
 
 const Container = styled.div`
 	position: relative;
-	text-align: center;
+	min-height: 50vh;
+	padding: 40px 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
 	img {
 		position: absolute;
