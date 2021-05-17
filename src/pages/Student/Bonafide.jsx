@@ -1,9 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
 import { Typography, Button } from '@material-ui/core';
 import styled from 'styled-components';
-import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { BlobProvider } from '@react-pdf/renderer';
+import { Document, Page } from 'react-pdf/dist/umd/entry.webpack';
 
 import Snack from 'contexts/Snack';
 import { FlexContainer, PageLoader } from 'components';
@@ -37,6 +39,11 @@ export default function Bonafide() {
 		} catch (error) {
 			error.handleGlobally && error.handleGlobally();
 		}
+	};
+
+	const handleLoadSuccess = (pdf, blob) => {
+		console.log(pdf);
+		console.log(blob);
 	};
 
 	const applyBonafide = async () => {
@@ -99,9 +106,21 @@ export default function Bonafide() {
 							)}
 							{step === 3 && (
 								<PdfContainer>
-									<PDFViewer style={{ width: '100%', height: '600px' }}>
-										<PdfDocument data={data} />
-									</PDFViewer>
+									<BlobProvider document={<PdfDocument data={data} />}>
+										{({ blob, url, loading }) => {
+											return loading ? (
+												<PageLoader />
+											) : (
+												<Document
+													file={url}
+													onLoadSuccess={pdf => handleLoadSuccess(pdf, blob)}
+													renderMode='canvas'
+												>
+													<Page pageNumber={1} width={window.innerWidth - 200} />
+												</Document>
+											);
+										}}
+									</BlobProvider>
 								</PdfContainer>
 							)}
 						</Container>
@@ -141,7 +160,7 @@ const Container = styled(FlexContainer)`
 `;
 
 const PdfContainer = styled.div`
-	margin: 0 auto;
+	margin: 20px auto;
 	width: 90%;
 	max-width: 1200px;
 	display: flex;

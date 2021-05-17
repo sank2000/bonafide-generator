@@ -137,4 +137,8 @@ const GlobalStyles = createGlobalStyle`
     background: ${colors.secondary};
   }
 
+	.react-pdf__Page{
+		border: 5px solid grey;
+	}
+
 `;
