@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Typography, TextField } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { format } from 'date-fns';
 import axios from 'axios';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 
@@ -23,7 +24,7 @@ export default function StudentLogin() {
 		try {
 			const { data: resData } = await axios.post('/student/login', {
 				registerNumber: registerNo,
-				dateOfBirth: selectedDate
+				dateOfBirth: format(new Date(selectedDate), 'yyyy-MM-dd')
 			});
 			setLoading(false);
 			login(setAuth, {
