@@ -99,7 +99,7 @@ export default function Bonafide() {
 									}}
 								</PDFDownloadLink>
 							)}
-							{step === 3 && (
+							{step === 3 && !(window.orientation > -1) && (
 								<PdfContainer>
 									<PDFViewer style={{ width: '100%', height: '600px' }}>
 										<PdfDocument data={data} />
