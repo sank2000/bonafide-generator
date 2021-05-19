@@ -8,4 +8,5 @@ const colors = {
 	white: '#ffffff',
 	tomato: '#E81224'
 };
+
 export default colors;

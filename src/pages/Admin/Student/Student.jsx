@@ -6,9 +6,10 @@ import {
 	TableRow,
 	Paper,
 	TableBody,
-	IconButton
+	IconButton,
+	Typography,
+	Fab
 } from '@material-ui/core';
-import { Typography, Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';

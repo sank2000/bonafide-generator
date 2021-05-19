@@ -1,11 +1,10 @@
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Typography, TextField } from '@material-ui/core';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { format } from 'date-fns';
 import axios from 'axios';
-import { KeyboardDatePicker } from '@material-ui/pickers';
 
 import { BgContainer, FlexContainer, ButtonWithLoader } from 'components';
 import Auth from 'contexts/Auth';

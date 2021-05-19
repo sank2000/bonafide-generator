@@ -1,9 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
 import { TextField, Button, Box, MenuItem } from '@material-ui/core';
 import { getYear } from 'date-fns';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { KeyboardDatePicker } from '@material-ui/pickers';
 import axios from 'axios';
 
 import Snack from 'contexts/Snack';

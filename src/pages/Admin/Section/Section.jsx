@@ -1,7 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Typography, Fab, IconButton } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { Table, TableContainer, TableHead, TableRow, Paper, TableBody } from '@material-ui/core';
+import {
+	Table,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Paper,
+	TableBody,
+	Typography,
+	Fab,
+	IconButton
+} from '@material-ui/core';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import axios from 'axios';

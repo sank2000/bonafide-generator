@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, TableContainer, TableHead, TableRow, Paper, TableBody } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
+import {
+	Table,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Paper,
+	TableBody,
+	Typography
+} from '@material-ui/core';
 import { format } from 'date-fns';
 
 import { StyledTableCell, StyledTableRow, PageLoader, RowWithTypography } from 'components';
