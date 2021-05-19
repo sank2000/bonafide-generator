@@ -42,7 +42,7 @@ export default function App() {
 			const statusCode = error.response ? error.response.status : null;
 			const commonSnack = { type: 'error', open: true };
 
-			if (statusCode === 400) {
+			if (statusCode === 400 || statusCode === 404) {
 				setSnack({
 					...commonSnack,
 					message:

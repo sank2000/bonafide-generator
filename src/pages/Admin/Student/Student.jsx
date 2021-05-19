@@ -41,6 +41,7 @@ export default function Student() {
 			setData(resData.data);
 			setLoading(false);
 		} catch (error) {
+			setLoading(false);
 			error.handleGlobally && error.handleGlobally();
 		}
 	};

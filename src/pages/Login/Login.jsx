@@ -7,6 +7,7 @@ import axios from 'axios';
 import { BgContainer, ButtonWithLoader, FlexContainer } from 'components';
 import Auth from 'contexts/Auth';
 import { login } from './function';
+import { handleChange } from 'functions';
 
 export default function Login() {
 	const { role } = useParams();
@@ -16,14 +17,6 @@ export default function Login() {
 		email: '',
 		password: ''
 	});
-
-	const handleChange = e => {
-		const { name, value } = e.target;
-		setData(old => ({
-			...old,
-			[name]: value
-		}));
-	};
 
 	const handleSubmit = async e => {
 		e.preventDefault();
@@ -59,7 +52,7 @@ export default function Login() {
 						name='email'
 						type='email'
 						value={data.email}
-						onChange={handleChange}
+						onChange={handleChange(setData)}
 					/>
 					<TextField
 						label='Password'
@@ -67,7 +60,7 @@ export default function Login() {
 						type='password'
 						name='password'
 						value={data.password}
-						onChange={handleChange}
+						onChange={handleChange(setData)}
 					/>
 					<ButtonWithLoader loading={loading} text='LOGIN' />
 				</form>

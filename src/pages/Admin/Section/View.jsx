@@ -19,6 +19,7 @@ export default function View({ viewDoc, loadData, setLoadData }) {
 			setData(resData.data);
 			setLoading(false);
 		} catch (error) {
+			setLoading(false);
 			error.handleGlobally && error.handleGlobally();
 		}
 	};

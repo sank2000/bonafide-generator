@@ -35,6 +35,7 @@ export default function Bonafide() {
 			}
 			setLoading(false);
 		} catch (error) {
+			setLoading(true);
 			error.handleGlobally && error.handleGlobally();
 		}
 	};
@@ -52,6 +53,7 @@ export default function Bonafide() {
 				type: 'success'
 			});
 		} catch (error) {
+			setLoadingApply(false);
 			error.handleGlobally && error.handleGlobally();
 		}
 	};

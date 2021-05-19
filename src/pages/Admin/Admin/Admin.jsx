@@ -35,6 +35,7 @@ export default function Admin() {
 			setData(resData.data);
 			setLoading(false);
 		} catch (error) {
+			setLoading(false);
 			error.handleGlobally && error.handleGlobally();
 		}
 	};
