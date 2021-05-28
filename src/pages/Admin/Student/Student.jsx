@@ -16,7 +16,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import axios from 'axios';
 
-import { StyledTableCell, StyledTableRow, Dialog, PageLoader } from 'components';
+import { StyledTableCell, StyledTableRow, Dialog, PageLoader, NotFound } from 'components';
 import { useAlStyles } from 'constants/classes';
 import Add from './Add';
 import Edit from './Edit';
@@ -123,6 +123,7 @@ export default function Student() {
 							})}
 						</TableBody>
 					</Table>
+					{data.length === 0 && <NotFound description='No Students found !' />}
 				</TableContainer>
 			)}
 			{loading && <PageLoader />}

@@ -14,7 +14,7 @@ import axios from 'axios';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 
-import { StyledTableCell, StyledTableRow, Dialog, PageLoader } from 'components';
+import { StyledTableCell, StyledTableRow, Dialog, PageLoader, NotFound } from 'components';
 import { useAlStyles } from 'constants/classes';
 import Add from './Add';
 
@@ -103,6 +103,7 @@ export default function Admin() {
 							})}
 						</TableBody>
 					</Table>
+					{data.length === 0 && <NotFound description='No admin found !' />}
 				</TableContainer>
 			)}
 			{loading && <PageLoader />}

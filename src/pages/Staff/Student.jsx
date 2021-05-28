@@ -11,7 +11,13 @@ import {
 } from '@material-ui/core';
 import { format } from 'date-fns';
 
-import { StyledTableCell, StyledTableRow, PageLoader, RowWithTypography } from 'components';
+import {
+	StyledTableCell,
+	StyledTableRow,
+	PageLoader,
+	RowWithTypography,
+	NotFound
+} from 'components';
 import { useAlStyles } from 'constants/classes';
 
 export default function Student() {
@@ -86,6 +92,7 @@ export default function Student() {
 							})}
 						</TableBody>
 					</Table>
+					{data.length === 0 && <NotFound description='No students found !' />}
 				</TableContainer>
 			)}
 		</section>

@@ -15,13 +15,13 @@ import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import axios from 'axios';
 
-import { StyledTableCell, StyledTableRow, PageLoader } from 'components';
+import { StyledTableCell, StyledTableRow, PageLoader, NotFound } from 'components';
 import { useAlStyles } from 'constants/classes';
 import Add from './Add';
 import Edit from './Edit';
 import View from './View';
 
-export default function Staff() {
+export default function Section() {
 	const classes = useAlStyles();
 	const [openAdd, setOpenAdd] = useState(false);
 	const [openUpdate, setOpenUpdate] = useState(false);
@@ -95,6 +95,7 @@ export default function Staff() {
 							})}
 						</TableBody>
 					</Table>
+					{data.length === 0 && <NotFound description='No section found !' />}
 				</TableContainer>
 			)}
 			{loading && <PageLoader />}
