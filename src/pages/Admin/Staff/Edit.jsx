@@ -19,8 +19,14 @@ export default function Edit({ open, setOpen, setLoadData, activeData }) {
 		e.preventDefault();
 		setLoading(true);
 		try {
+			const payload = {
+				...data
+			};
+			delete payload._id;
+			delete payload.__v;
+			delete payload.section;
 			await axios.put('/admin/staff/update', {
-				...data,
+				...payload,
 				id: activeData._id
 			});
 			setLoading(false);
