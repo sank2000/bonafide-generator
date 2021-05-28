@@ -3,6 +3,7 @@ import { TextField, Button, Box, MenuItem } from '@material-ui/core';
 import { getYear } from 'date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { format } from 'date-fns';
 import axios from 'axios';
 
 import Snack from 'contexts/Snack';
@@ -39,7 +40,7 @@ export default function Add({ open, setOpen, setLoadData }) {
 		try {
 			await axios.post('/admin/student/new', {
 				...postData,
-				dateOfBirth: selectedDOB,
+				dateOfBirth: format(new Date(selectedDOB), 'yyyy-MM-dd'),
 				batch: `${getYear(selectedBatch)} - ${getYear(selectedBatch) + 4}`
 			});
 			setLoading(false);

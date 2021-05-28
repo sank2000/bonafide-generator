@@ -15,10 +15,7 @@ import Snack from 'contexts/Snack';
 import { Alert } from 'components';
 import { logout } from 'pages/Login/function';
 
-axios.defaults.baseURL =
-	process.env.NODE_ENV === 'production'
-		? process.env.REACT_APP_API ?? 'http://localhost:4000/'
-		: 'http://localhost:4000/';
+axios.defaults.baseURL = process.env.REACT_APP_API ?? 'http://localhost:4000/';
 
 export default function App() {
 	const [auth, setAuth] = useState(() =>

@@ -3,7 +3,7 @@ import { TextField, Button, Box, MenuItem } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import axios from 'axios';
-import { getYear } from 'date-fns';
+import { getYear, format } from 'date-fns';
 
 import { Modal, Select, ButtonWithLoader } from 'components';
 import { useAlStyles } from 'constants/classes';
@@ -24,9 +24,15 @@ export default function Edit({ open, setOpen, setLoadData, activeData }) {
 		e.preventDefault();
 		setLoading(true);
 		try {
+			const payload = {
+				...data
+			};
+			delete payload._id;
+			delete payload.__v;
+			delete payload.section;
 			await axios.put('/admin/student/update', {
-				...data,
-				dateOfBirth: selectedDOB,
+				...payload,
+				dateOfBirth: format(new Date(selectedDOB), 'yyyy-MM-dd'),
 				batch: `${getYear(selectedBatch)} - ${getYear(selectedBatch) + 4}`,
 				id: activeData._id
 			});
